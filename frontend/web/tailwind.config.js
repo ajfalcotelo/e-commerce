@@ -22,6 +22,7 @@ export default {
       "buster-green": "#00FF66",
       "candy-pink": "#E07575",
       blair: "#A0BCE0",
+      transparent: "transparent"
     },
     extend: {
       fontFamily: {
@@ -30,5 +31,9 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwindcss/plugin')(({ addVariant }) => {
+      addVariant('search-cancel', '&::-webkit-search-cancel-button');
+    }),
+  ],
 };
