@@ -22,6 +22,7 @@ export default {
       "buster-green": "#00FF66",
       "candy-pink": "#E07575",
       blair: "#A0BCE0",
+      transparent: "transparent"
     },
     extend: {
       fontFamily: {
