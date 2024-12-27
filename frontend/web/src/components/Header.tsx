@@ -1,4 +1,4 @@
-import { NAV } from "../utils/constant.ts";
+import { NAV } from '../utils/constant.ts';
 
 const Header = () => {
   return (
