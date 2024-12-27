@@ -6,8 +6,29 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    colors: {
+      primary: {
+        white: "#FFFFFF",
+        black: "#363738",
+      },
+      secondary: {
+        "white-smoke": "#F5F5F5",
+        "white-desert": "#FEFAF1",
+        "cute-crab": "#DB4444",
+      },
+      "dr-white": "#D37643",
+      "battle-grey": "#7D8184",
+      black: "#000000",
+      "buster-green": "#00FF66",
+      "candy-pink": "#E07575",
+      blair: "#A0BCE0",
+    },
+    extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+        inter: ["Inter", "sans-serif"],
+      },
+    },
   },
   plugins: [],
-}
-
+};
