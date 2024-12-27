@@ -1,3 +1,5 @@
+
+
 export const NAV = {
     LOGO: {
         NAME: "Exclusive",
@@ -9,18 +11,18 @@ export const NAV = {
     },
     CONTACT: {
         NAME: "Contact",
-        ROUTE: "/"
+        ROUTE: "/contact"
     },
     ABOUT: {
         NAME: "About",
-        ROUTE: "/"
+        ROUTE: "/about"
     },
     SIGNUP: {
         NAME: "Sign Up",
-        ROUTE: "/"
+        ROUTE: "/sign-up"
     },
     SEARCH: {
         NAME: "What are you looking for?",
-        ICON: "/"
+        ICON: "/search.svg"
     }
 }
