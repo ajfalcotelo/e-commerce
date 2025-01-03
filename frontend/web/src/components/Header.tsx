@@ -1,5 +1,4 @@
 import { NAV } from '../utils/constant.ts';
-import { NAV } from '../utils/constant.ts';
 import { NavLink } from './NavLinks.tsx';
 
 const Header = () => {
@@ -35,10 +34,7 @@ const Header = () => {
                   "
         />
         <button className="p-2 h-full">
-          <img
-            src={NAV.SEARCH.ICON}
-            className="stroke-primary-white stroke-1"
-          />
+          <img src={NAV.SEARCH.ICON} />
         </button>
       </div>
     </header>
