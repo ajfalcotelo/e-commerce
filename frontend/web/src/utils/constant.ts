@@ -1,4 +1,4 @@
-import { IconFacebook, IconInstagram, IconLinkedIn, IconTwitter } from "../components/IconsSvg";
+import { IconSearch, IconSend, IconFacebook, IconInstagram, IconLinkedIn, IconTwitter } from "../components/IconsSvg";
 
 export const NAV = {
     LOGO: {
@@ -23,14 +23,17 @@ export const NAV = {
     },
     SEARCH: {
         NAME: "What are you looking for?",
-        ICON: "/search.svg"
+        ICON: IconSearch
     }
 }
 
 export const FOOTER = {
-    EMAIL: {
-        NAME: "Enter your email",
-        ICON: "/icon-send.svg"
+    EXCLUSIVE: {
+        OFFER: "Get 10% off your first order",
+        INPUT: {
+            NAME: "Enter your email",
+            ICON: IconSend
+        }
     },
     SUPPORT: {
         ADDRESS: "Blk 123 H 4, Bangmadeck",

@@ -34,7 +34,7 @@ const Header = () => {
                   "
         />
         <button className="p-2">
-          <img src={NAV.SEARCH.ICON} />
+          <NAV.SEARCH.ICON ClassName="stroke-primary-black" />
         </button>
       </div>
     </header>

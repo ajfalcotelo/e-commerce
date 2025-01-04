@@ -1,6 +1,5 @@
 import { FooterSection } from './FooterSection';
 import { FOOTER } from '../utils/constant.ts';
-import { IconSend } from './IconsSvg.tsx';
 
 export const Footer = () => {
   return (
@@ -8,7 +7,7 @@ export const Footer = () => {
       <div className="flex flex-row justify-between gap-2 pt-20 pb-20 pl-32 pr-32">
         <FooterSection header="Exclusive">
           <h2 className="inline-block font-medium text-xl mb-2">Subscribe</h2>
-          <p>Get 10% off your first order</p>
+          <p>{FOOTER.EXCLUSIVE.OFFER}</p>
           <div
             className="flex flex-row items-center rounded-md
                       border border-solid border-primary-white
@@ -19,11 +18,11 @@ export const Footer = () => {
               type="text"
               name=""
               id=""
-              placeholder={FOOTER.EMAIL.NAME}
+              placeholder={FOOTER.EXCLUSIVE.INPUT.NAME}
               className="p-3 pl-4 bg-transparent focus:outline-none"
             />
             <button type="button" className="p-2">
-              <IconSend ClassName="stroke-primary-white"></IconSend>
+              <FOOTER.EXCLUSIVE.INPUT.ICON ClassName="stroke-primary-white" />
             </button>
           </div>
         </FooterSection>
