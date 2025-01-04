@@ -19,8 +19,8 @@ const Header = () => {
       <div
         className="
                     flex flex-row items-center rounded-md h-10
-                    bg-secondary-white-smoke group
-                    focus-within:outline focus-within:outline-2 focus-within:outline-primary-black
+                    bg-secondary-white-smoke
+                    focus-within:outline focus-within:outline-1 focus-within:outline-primary-black
                 "
       >
         <input
@@ -29,11 +29,11 @@ const Header = () => {
           id=""
           placeholder={NAV.SEARCH.NAME}
           className="
-                      bg-transparent text-base pt-2 pl-2 pb-2 pr-1 w-64 focus:outline-none
+                      bg-transparent text-base p-2 pr-1 w-64 focus:outline-none
                       search-cancel:appearance-none
                   "
         />
-        <button className="p-2 h-full">
+        <button className="p-2">
           <img src={NAV.SEARCH.ICON} />
         </button>
       </div>
