@@ -1,9 +1,10 @@
 import { FooterSection } from './FooterSection';
 import { FOOTER } from '../utils/constant.ts';
+import { FooterLinks } from './ui/FooterLinks.tsx';
 
 export const Footer = () => {
   return (
-    <footer className="flex flex-col justify-between bg-black w-full">
+    <footer className="flex flex-col justify-between bg-black w-full mt-32">
       <div className="flex flex-row justify-between gap-2 pt-20 pb-20 pl-32 pr-32">
         <FooterSection header="Exclusive">
           <h2 className="inline-block font-medium text-xl mb-2">Subscribe</h2>
@@ -32,22 +33,38 @@ export const Footer = () => {
           <p>{FOOTER.SUPPORT.NUMBER}</p>
         </FooterSection>
         <FooterSection header="Account">
-          <a href={FOOTER.ACCOUNT.PROFILE.ROUTE}>
+          <FooterLinks route={FOOTER.ACCOUNT.PROFILE.ROUTE}>
             {FOOTER.ACCOUNT.PROFILE.NAME}
-          </a>
-          <a href={FOOTER.ACCOUNT.LOGIN.ROUTE}>{FOOTER.ACCOUNT.LOGIN.NAME}</a>
-          <a href={FOOTER.ACCOUNT.SIGNUP.ROUTE}>{FOOTER.ACCOUNT.SIGNUP.NAME}</a>
-          <a href={FOOTER.ACCOUNT.CART.ROUTE}>{FOOTER.ACCOUNT.CART.NAME}</a>
-          <a href={FOOTER.ACCOUNT.WISHLIST.ROUTE}>
+          </FooterLinks>
+          <FooterLinks route={FOOTER.ACCOUNT.LOGIN.ROUTE}>
+            {FOOTER.ACCOUNT.LOGIN.NAME}
+          </FooterLinks>
+          <FooterLinks route={FOOTER.ACCOUNT.SIGNUP.ROUTE}>
+            {FOOTER.ACCOUNT.SIGNUP.NAME}
+          </FooterLinks>
+          <FooterLinks route={FOOTER.ACCOUNT.CART.ROUTE}>
+            {FOOTER.ACCOUNT.CART.NAME}
+          </FooterLinks>
+          <FooterLinks route={FOOTER.ACCOUNT.WISHLIST.ROUTE}>
             {FOOTER.ACCOUNT.WISHLIST.NAME}
-          </a>
-          <a href={FOOTER.ACCOUNT.SHOP.ROUTE}>{FOOTER.ACCOUNT.SHOP.NAME}</a>
+          </FooterLinks>
+          <FooterLinks route={FOOTER.ACCOUNT.SHOP.ROUTE}>
+            {FOOTER.ACCOUNT.SHOP.NAME}
+          </FooterLinks>
         </FooterSection>
         <FooterSection header="Quick Link">
-          <a href={FOOTER.QLINKS.POLICY.ROUTE}>{FOOTER.QLINKS.POLICY.NAME}</a>
-          <a href={FOOTER.QLINKS.TERMS.ROUTE}>{FOOTER.QLINKS.TERMS.NAME}</a>
-          <a href={FOOTER.QLINKS.FAQ.ROUTE}>{FOOTER.QLINKS.FAQ.NAME}</a>
-          <a href={FOOTER.QLINKS.CONTACT.ROUTE}>{FOOTER.QLINKS.CONTACT.NAME}</a>
+          <FooterLinks route={FOOTER.QLINKS.POLICY.ROUTE}>
+            {FOOTER.QLINKS.POLICY.NAME}
+          </FooterLinks>
+          <FooterLinks route={FOOTER.QLINKS.TERMS.ROUTE}>
+            {FOOTER.QLINKS.TERMS.NAME}
+          </FooterLinks>
+          <FooterLinks route={FOOTER.QLINKS.FAQ.ROUTE}>
+            {FOOTER.QLINKS.FAQ.NAME}
+          </FooterLinks>
+          <FooterLinks route={FOOTER.QLINKS.CONTACT.ROUTE}>
+            {FOOTER.QLINKS.CONTACT.NAME}
+          </FooterLinks>
         </FooterSection>
         <FooterSection header="Download App">
           <p className="text-xs text-secondary-white-desert">

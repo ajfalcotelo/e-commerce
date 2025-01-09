@@ -2,7 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  font-family: 'Poppins', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Inter', sans-serif;
+}
 .signup-hero {
   background: url('/signup_hero.png') center no-repeat;
   background-size: cover;
+}
+
+.site-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.active {
+  color: red;
 }
