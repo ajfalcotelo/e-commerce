@@ -8,11 +8,22 @@ type NavLinkProps = {
 	children: React.ReactNode;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export const Nav = ({ route, className, children, ...props }: NavLinkProps) => {
+export const NavLinks = ({
+	route,
+	className,
+	children,
+	...props
+}: NavLinkProps) => {
 	return (
 		<NavLink
 			to={route}
-			className={({ isActive }) => isActive ? cn("border-b-2 border-black border-opacity-50 text-sm font-medium inline-flex items-center text-center py-1") : "text-sm font-medium inline-flex items-center text-center py-1"}
+			className={({ isActive }) =>
+				isActive
+					? cn(
+							"border-t-2 border-b-2 border-b-black border-t-transparent border-opacity-50 text-sm font-medium inline-flex items-center text-center py-1"
+					  )
+					: "text-sm font-medium inline-flex items-center text-center py-1"
+			}
 			{...props}
 		>
 			{children}

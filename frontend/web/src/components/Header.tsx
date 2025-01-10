@@ -1,20 +1,21 @@
 import { NAV } from "../utils/constant.ts";
-import { Nav } from "./ui/NavLinks.tsx";
+import { NavLinks } from "./ui/NavLinks.tsx";
+import { NavLink } from "react-router";
 
 export const Header = () => {
 	return (
 		<header className="site-header flex flex-row justify-around items-center w-full m-auto h-[10vh] border-b">
-			<a
-				href={NAV.HOME.ROUTE}
-				className="text-3xl font-bold font-inter p-2 select-none"
+			<NavLink
+				to={NAV.HOME.ROUTE}
+				className="text-3xl font-bold font-inter p-2 select-non text-black"
 			>
 				{NAV.LOGO.NAME}
-			</a>
+			</NavLink>
 			<div className="flex flex-row gap-12 text-xl font-poppins">
-				<Nav route={NAV.HOME.ROUTE}>{NAV.HOME.NAME}</Nav>
-				<Nav route={NAV.CONTACT.ROUTE}>{NAV.CONTACT.NAME}</Nav>
-				<Nav route={NAV.ABOUT.ROUTE}>{NAV.ABOUT.NAME}</Nav>
-				<Nav route={NAV.SIGNUP.ROUTE}>{NAV.SIGNUP.NAME}</Nav>
+				<NavLinks route={NAV.HOME.ROUTE}>{NAV.HOME.NAME}</NavLinks>
+				<NavLinks route={NAV.CONTACT.ROUTE}>{NAV.CONTACT.NAME}</NavLinks>
+				<NavLinks route={NAV.ABOUT.ROUTE}>{NAV.ABOUT.NAME}</NavLinks>
+				<NavLinks route={NAV.SIGNUP.ROUTE}>{NAV.SIGNUP.NAME}</NavLinks>
 			</div>
 			<div
 				className="
