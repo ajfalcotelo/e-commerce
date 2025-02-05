@@ -1,9 +1,4 @@
-import {
-	createBrowserRouter,
-	RouterProvider,
-	createRoutesFromElements,
-	Route,
-} from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 // Pages
 import { Auth } from "./pages/auth/Auth";
@@ -15,18 +10,38 @@ import { Shop } from "./pages/Shop";
 // Layouts
 import { RootLayout } from "./layouts/RootLayout";
 
-const router = createBrowserRouter(
-	createRoutesFromElements(
-		<Route path="/" element={<RootLayout />}>
-			<Route index element={<Shop />} />
-			<Route path={ROUTES.HOME} element={<Shop />} />
-			<Route path={ROUTES.CONTACT} element={<Contacts />} />
-			<Route path={ROUTES.ABOUT} element={<About />} />
-			<Route path={ROUTES.SIGN_UP} element={<Auth isSignup={true} />} />
-			<Route path={ROUTES.LOGIN} element={<Auth isSignup={false} />} />
-		</Route>
-	)
-);
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <RootLayout />,
+		children: [
+			{
+				index: true,
+				element: <Shop />,
+			},
+			{
+				path: ROUTES.HOME,
+				element: <Shop />,
+			},
+			{
+				path: ROUTES.CONTACT,
+				element: <Contacts />,
+			},
+			{
+				path: ROUTES.ABOUT,
+				element: <About />,
+			},
+			{
+				path: ROUTES.SIGN_UP,
+				element: <Auth isSignup={true} />,
+			},
+			{
+				path: ROUTES.LOGIN,
+				element: <Auth isSignup={false} />,
+			},
+		],
+	},
+]);
 
 const App = () => {
 	return <RouterProvider router={router} />;
