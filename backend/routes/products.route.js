@@ -3,7 +3,7 @@ import {
   getAllProducts,
   getOneProduct,
   postOneProduct,
-  putOneProduct,
+  updateOneProduct,
   deleteOneProduct,
 } from "../controllers/products.contoller.js";
 
@@ -19,7 +19,7 @@ productRouter.get("/:id", getOneProduct);
 productRouter.post("/", postOneProduct);
 
 // PUT / update a product
-productRouter.put("/:id", putOneProduct);
+productRouter.patch("/:id", updateOneProduct);
 
 // DELETE a product
 productRouter.delete("/:id", deleteOneProduct);

@@ -1,4 +1,5 @@
 import Product from "../models/products.model.js";
+import mongoose from "mongoose";
 
 // @desc Fetch all products
 // @route GET /api/products/
@@ -18,9 +19,16 @@ export const getAllProducts = async (req, res, next) => {
 // @desc Fetch one product
 // @route GET /api/products/:id
 export const getOneProduct = async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error("Invalid Id");
+    err.status = 404;
+    next(err);
+  }
+
   try {
-    const { id } = req.params;
-    const product = await Product.findById({ id });
+    const product = await Product.findById(id);
     res.status(200).json(product);
   } catch (error) {
     console.error("Something went wrong in GET one product", error);
@@ -33,10 +41,17 @@ export const getOneProduct = async (req, res, next) => {
 // @desc Insert one product
 // @route POST /api/products/
 export const postOneProduct = async (req, res, next) => {
-  const product = req.body;
+  const { name, cost, imageUrl } = req.body;
 
-  if (!product.name || !product.cost || !product.imageUrl) {
-    const error = new Error("Fill up all required fields");
+  if (!name || !cost || !imageUrl) {
+    let missingFields = [];
+    if (!name) missingFields.push("name");
+    if (!cost) missingFields.push("cost");
+    if (!imageUrl) missingFields.push("imageUrl");
+
+    const error = new Error(
+      `Fill up all required fields: ${missingFields.join(", ")}`
+    );
     error.status = 400;
     return next(error);
   }
@@ -55,10 +70,16 @@ export const postOneProduct = async (req, res, next) => {
 };
 
 // @desc Update one product
-// @route PUT /api/products/:id
-export const putOneProduct = async (req, res, next) => {
+// @route PATCH /api/products/:id
+export const updateOneProduct = async (req, res, next) => {
   const update = req.body;
   const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error("Invalid Id");
+    err.status = 404;
+    next(err);
+  }
 
   try {
     const matchedProduct = await Product.findByIdAndUpdate(id, update, {
@@ -77,6 +98,12 @@ export const putOneProduct = async (req, res, next) => {
 // @route DELETE /api/products/:id
 export const deleteOneProduct = async (req, res) => {
   const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    const err = new Error("Invalid Id");
+    err.status = 404;
+    next(err);
+  }
 
   try {
     await Product.findByIdAndDelete(id);
