@@ -3,20 +3,20 @@ import { cn } from "../../utils/cn";
 import { NavLink } from "react-router";
 import { NAV } from "../../utils/constant";
 
-type NavLinkProps = {
+type HeaderLinkProps = {
 	route: string;
 	className?: string;
 	children: React.ReactNode;
 	isLogo?: boolean;
 } & AnchorHTMLAttributes<HTMLAnchorElement>;
 
-export const NavLinks = ({
+export const HeaderLink = ({
 	route,
 	className,
 	children,
 	isLogo = false,
 	...props
-}: NavLinkProps) => {
+}: HeaderLinkProps) => {
 	return (
 		<NavLink
 			to={route}
@@ -25,7 +25,7 @@ export const NavLinks = ({
 
 				if (isActive) {
 					activeClass =
-						"border-t-2 border-b-2 border-t-transparent border-b-black border-opacity-50 py-2";
+						"border-y-2 border-t-transparent border-b-black border-opacity-50 py-2";
 
 					if (location.pathname === "/" || route === NAV.HOME.ROUTE) {
 						if (isLogo) {
@@ -35,7 +35,7 @@ export const NavLinks = ({
 				}
 
 				return cn(
-					"text-sm font-medium inline-flex items-center text-center",
+					"text-base font-medium items-center text-center",
 					activeClass,
 					className
 				);

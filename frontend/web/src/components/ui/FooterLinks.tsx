@@ -1,11 +1,13 @@
+import { Link } from "react-router";
+
 type FooterLinksProps = {
-  children: React.ReactNode;
-  route: string;
+	children: React.ReactNode;
+	route: string;
 };
-export const FooterLinks = ({ children, route }: FooterLinksProps) => {
-  return (
-    <a href={route} className="transition-all hover:underline">
-      {children}
-    </a>
-  );
+export const FooterLink = ({ children, route }: FooterLinksProps) => {
+	return (
+		<Link to={route} className="transition-all hover:underline">
+			{children}
+		</Link>
+	);
 };

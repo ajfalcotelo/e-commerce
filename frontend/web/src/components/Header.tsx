@@ -1,44 +1,66 @@
+import useAuthContext from "../hooks/useAuthContext.tsx";
+import useLogOut from "../hooks/useLogOut.tsx";
 import { NAV } from "../utils/constant.ts";
-import { NavLinks } from "./ui/NavLinks.tsx";
+import { Button } from "./ui/Button.tsx";
+import { HeaderLink } from "./ui/HeaderLink.tsx";
+import LinkButton from "./ui/LinkButton.tsx";
+import SearchInput from "./ui/SearchInput.tsx";
 
 export const Header = () => {
+	const { user } = useAuthContext();
+	const { logout } = useLogOut();
+
+	const handleLogOutClick = () => {
+		logout();
+		console.log("Logged Out");
+	};
+
 	return (
-		<header className="site-header flex flex-row justify-around items-center w-full m-auto h-[10vh] border-b">
-			<NavLinks
+		<header className="flex flex-row justify-between items-center px-[16vw] h-24 border-b border-b-border-grey">
+			<HeaderLink
 				route={NAV.HOME.ROUTE}
-				className="text-3xl font-bold font-inter p-2 select-non text-black"
+				className="text-4xl font-bold font-inter select-none text-black"
 				isLogo
 			>
 				{NAV.LOGO.NAME}
-			</NavLinks>
-			<div className="flex flex-row gap-12 text-xl font-poppins">
-				<NavLinks route={NAV.HOME.ROUTE}>{NAV.HOME.NAME}</NavLinks>
-				<NavLinks route={NAV.CONTACT.ROUTE}>{NAV.CONTACT.NAME}</NavLinks>
-				<NavLinks route={NAV.ABOUT.ROUTE}>{NAV.ABOUT.NAME}</NavLinks>
-				<NavLinks route={NAV.SIGNUP.ROUTE}>{NAV.SIGNUP.NAME}</NavLinks>
+			</HeaderLink>
+			<div className="grid grid-cols-3 place-items-center w-[25%] text-xl">
+				<HeaderLink route={NAV.HOME.ROUTE}>{NAV.HOME.NAME}</HeaderLink>
+				<HeaderLink route={NAV.CONTACT.ROUTE}>{NAV.CONTACT.NAME}</HeaderLink>
+				<HeaderLink route={NAV.ABOUT.ROUTE}>{NAV.ABOUT.NAME}</HeaderLink>
 			</div>
-			<div
-				className="
-                    flex flex-row items-center rounded-md h-10
-                    bg-secondary-white-smoke
-                    px-4
-                    focus-within:outline focus-within:outline-1 focus-within:outline-primary-black
-                "
-			>
-				<input
-					type="search"
-					name=""
-					id=""
-					placeholder={NAV.SEARCH.NAME}
-					className="
-                      bg-transparent p-2 text-sm w-64 focus:outline-none
-                      search-cancel:appearance-none
-                  "
-				/>
-				<button className="p-2">
-					<NAV.SEARCH.ICON ClassName="stroke-primary-black" />
-				</button>
-			</div>
+
+			<SearchInput />
+
+			{user ? (
+				<div className="grid grid-cols-[2fr_1fr] w-50 h-10 place-items-center gap-3">
+					<span>{user.email}</span>
+					<Button
+						className="w-20 h-10"
+						variant={"classic_white"}
+						onClick={handleLogOutClick}
+					>
+						Log Out
+					</Button>
+				</div>
+			) : (
+				<div className="grid grid-cols-2 w-44 h-10 gap-3">
+					<LinkButton
+						route={NAV.LOGIN.ROUTE}
+						variant={"classic_white"}
+						className="place-content-center"
+					>
+						{NAV.LOGIN.NAME}
+					</LinkButton>
+					<LinkButton
+						route={NAV.SIGNUP.ROUTE}
+						variant={"classic_white"}
+						className="place-content-center"
+					>
+						{NAV.SIGNUP.NAME}
+					</LinkButton>
+				</div>
+			)}
 		</header>
 	);
 };

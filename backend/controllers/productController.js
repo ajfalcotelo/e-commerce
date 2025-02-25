@@ -1,13 +1,12 @@
-import Product from "../models/products.model.js";
+import Product from "../models/Product.js";
 import mongoose from "mongoose";
 
 // @desc Fetch all products
 // @route GET /api/products/
-export const getAllProducts = async (req, res, next) => {
+export const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find({});
-    console.log(products);
-    res.status(200).json(products);
+    res.status(200).json({ operation: "success", products });
   } catch (error) {
     console.error("Something went wrong in GET all products", error);
     const err = new Error("Something went wrong in GET all products");
@@ -18,7 +17,7 @@ export const getAllProducts = async (req, res, next) => {
 
 // @desc Fetch one product
 // @route GET /api/products/:id
-export const getOneProduct = async (req, res, next) => {
+export const getProductById = async (req, res, next) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -29,7 +28,7 @@ export const getOneProduct = async (req, res, next) => {
 
   try {
     const product = await Product.findById(id);
-    res.status(200).json(product);
+    res.status(200).json({ operation: "success", product });
   } catch (error) {
     console.error("Something went wrong in GET one product", error);
     const err = new Error("Something went wrong in GET one product");
@@ -71,7 +70,7 @@ export const postOneProduct = async (req, res, next) => {
 
 // @desc Update one product
 // @route PATCH /api/products/:id
-export const updateOneProduct = async (req, res, next) => {
+export const updateProductById = async (req, res, next) => {
   const update = req.body;
   const { id } = req.params;
 
@@ -85,7 +84,7 @@ export const updateOneProduct = async (req, res, next) => {
     const matchedProduct = await Product.findByIdAndUpdate(id, update, {
       new: true,
     });
-    res.status(200).json({ success: true, data: matchedProduct });
+    res.status(200).json({ operation: "success", data: matchedProduct });
   } catch (error) {
     console.log(error);
     const err = new Error("Internal Server Error: Failed to update product");
@@ -96,7 +95,7 @@ export const updateOneProduct = async (req, res, next) => {
 
 // @desc Delete one product
 // @route DELETE /api/products/:id
-export const deleteOneProduct = async (req, res) => {
+export const deleteProductById = async (req, res) => {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -107,7 +106,9 @@ export const deleteOneProduct = async (req, res) => {
 
   try {
     await Product.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: `Deleted Product ${id}` });
+    res
+      .status(200)
+      .json({ operation: "success", message: `Deleted Product ${id}` });
   } catch (error) {
     console.log(error);
     const err = new Error("Internal Server Error: Failed to delete product");

@@ -1,27 +1,56 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 
 // Pages
-import { Auth } from "./pages/auth/Auth";
 import { ROUTES } from "./utils/constant";
 import { Contacts } from "./pages/Contacts";
 import { About } from "./pages/About";
-import { Shop } from "./pages/Shop";
+import Shop from "./pages/Shop";
+import NotFound from "./pages/NotFound";
+import Login from "./pages/auth/LogIn";
+import SignUp from "./pages/auth/SignUp";
 
 // Layouts
-import { RootLayout } from "./layouts/RootLayout";
+import RootLayout from "./layouts/RootLayout";
+import AuthLayout from "./layouts/AuthLayout";
 
 const router = createBrowserRouter([
 	{
-		path: "/",
 		element: <RootLayout />,
 		children: [
 			{
-				index: true,
+				path: ROUTES.HOME.ROOT,
 				element: <Shop />,
+				children: [
+					{
+						path: ROUTES.HOME.WOMEN,
+						element: <Shop />,
+					},
+					{
+						path: ROUTES.HOME.MEN,
+						element: <Shop />,
+					},
+					{
+						path: ROUTES.HOME.ELECTRONICS,
+						element: <Shop />,
+					},
+					{
+						path: ROUTES.HOME.JEWELRY,
+						element: <Shop />,
+					},
+				],
 			},
 			{
-				path: ROUTES.HOME,
-				element: <Shop />,
+				element: <AuthLayout />,
+				children: [
+					{
+						path: ROUTES.AUTH.LOGIN,
+						element: <Login />,
+					},
+					{
+						path: ROUTES.AUTH.SIGNUP,
+						element: <SignUp />,
+					},
+				],
 			},
 			{
 				path: ROUTES.CONTACT,
@@ -32,12 +61,8 @@ const router = createBrowserRouter([
 				element: <About />,
 			},
 			{
-				path: ROUTES.SIGN_UP,
-				element: <Auth isSignup={true} />,
-			},
-			{
-				path: ROUTES.LOGIN,
-				element: <Auth isSignup={false} />,
+				path: "*",
+				element: <NotFound />,
 			},
 		],
 	},

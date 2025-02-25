@@ -1,6 +1,6 @@
-import path from "path";
+const notFoundMiddleware = (req, res, next) => {
+  console.log("notFoundMiddleware catched");
 
-const notFound = (req, res, next) => {
   const error = new Error(
     `URL Not Found - ${req.protocol}://${req.get("host")}${req.originalUrl})}`
   );
@@ -8,4 +8,4 @@ const notFound = (req, res, next) => {
   next(error);
 };
 
-export default notFound;
+export default notFoundMiddleware;

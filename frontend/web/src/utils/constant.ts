@@ -7,12 +7,24 @@ import {
   IconTwitter,
 } from '../components/ui/IconsSvg';
 
+// Temp solution for nested ROUTES
+// idk kung ano pede ipalit
+// since gagamit tayo ng FakeStoreAPI, ito yung categories
+
 export const ROUTES = {
-  LOGIN: '/login',
   ABOUT: '/about',
-  HOME: '/shop',
-  SIGN_UP: '/sign-in',
+  HOME: {
+    ROOT: '/',
+    WOMEN: '/womens',
+    MEN: '/mens',
+    ELECTRONICS: '/electronics',
+    JEWELRY: '/jewelry',
+  },
   CONTACT: '/contact',
+  AUTH: {
+    LOGIN: '/auth/login',
+    SIGNUP: '/auth/signup',
+  }
 };
 
 export const BANNER = {
@@ -27,12 +39,12 @@ export const CTA = {
       },
       LOGIN: {
         TITLE: 'Log In',
-        ACTION: ROUTES.LOGIN,
+        ACTION: ROUTES.AUTH.LOGIN,
       },
       OAUTH: {
         GOOGLE: {
           TITLE: 'Sign up with Google',
-          ICON: '/Icon-Google.png',
+          ICON: '/icon-google.png',
         },
       },
     },
@@ -48,7 +60,7 @@ export const CTA = {
 
   BANNER: {
     TITLE: 'ShopNow',
-    ACTION: ROUTES.HOME,
+    ACTION: ROUTES.HOME.ROOT,
   },
 };
 
@@ -65,11 +77,11 @@ export const AUTHFORM = {
 export const NAV = {
   LOGO: {
     NAME: 'Exclusive',
-    ROUTE: ROUTES.HOME,
+    ROUTE: ROUTES.HOME.ROOT,
   },
   HOME: {
     NAME: 'Home',
-    ROUTE: ROUTES.HOME,
+    ROUTE: ROUTES.HOME.ROOT,
   },
   CONTACT: {
     NAME: 'Contact',
@@ -81,7 +93,11 @@ export const NAV = {
   },
   SIGNUP: {
     NAME: 'Sign Up',
-    ROUTE: ROUTES.SIGN_UP,
+    ROUTE: ROUTES.AUTH.SIGNUP,
+  },
+  LOGIN: {
+    NAME: 'Log In',
+    ROUTE: ROUTES.AUTH.LOGIN
   },
   SEARCH: {
     NAME: 'What are you looking for?',
@@ -109,11 +125,11 @@ export const FOOTER = {
     },
     LOGIN: {
       NAME: 'Login',
-      ROUTE: '/log-in',
+      ROUTE: ROUTES.AUTH.LOGIN,
     },
     SIGNUP: {
       NAME: 'Register',
-      ROUTE: '/sign-up',
+      ROUTE: ROUTES.AUTH.SIGNUP,
     },
     CART: {
       NAME: 'Cart',
@@ -125,7 +141,7 @@ export const FOOTER = {
     },
     SHOP: {
       NAME: 'Shop',
-      ROUTE: '/',
+      ROUTE: ROUTES.HOME.ROOT,
     },
   },
   QLINKS: {
@@ -143,7 +159,7 @@ export const FOOTER = {
     },
     CONTACT: {
       NAME: 'Contact',
-      ROUTE: '/contact',
+      ROUTE: ROUTES.CONTACT,
     },
   },
   DOWNLOAD: {
