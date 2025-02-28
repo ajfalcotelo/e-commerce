@@ -4,7 +4,8 @@ import {
   getProductById,
   getProducts,
   postOneProduct,
-  updateProductById,
+  patchProduct,
+  putProduct,
 } from "../controllers/productController.js";
 
 const productRoutes = express.Router();
@@ -18,8 +19,11 @@ productRoutes.get("/:id", getProductById);
 // POST a product
 productRoutes.post("/", postOneProduct);
 
-// PUT / update a product
-productRoutes.patch("/:id", updateProductById);
+// PATCH a product
+productRoutes.patch("/:id", patchProduct);
+
+// PUT a product
+productRoutes.put("/:id", putProduct);
 
 // DELETE a product
 productRoutes.delete("/:id", deleteProductById);
