@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useAuthContext from "./useAuthContext";
+import { AuthError, auth } from "../api/auth";
 
 type LogIn = {
 	email: string;
@@ -16,26 +17,15 @@ const useLogIn = ({ email, password }: LogIn) => {
 		setError(null);
 
 		try {
-			const response = await fetch("http://localhost:8000/api/user/login", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, password }),
-			});
+			const response = await auth.post("/login", { email, password });
+			const { token, user } = response.data;
 
-			const json = await response.json();
-			const { token, user } = json;
-
-			if (!response.ok) {
-				setIsLoading(false);
-				setError(json.error);
-			} else if (response.ok) {
-				setIsLoading(false);
-				localStorage.setItem("user", JSON.stringify({ token, ...user }));
-				dispatch({ type: "LOGIN", payload: { token, ...user } });
-			}
+			setIsLoading(false);
+			localStorage.setItem("user", JSON.stringify({ token, ...user }));
+			dispatch({ type: "LOGIN", payload: { token, ...user } });
 		} catch (error) {
 			setIsLoading(false);
-			setError((error as Error).message);
+			setError((error as AuthError)?.error);
 		}
 	};
 
