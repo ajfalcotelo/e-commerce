@@ -1,4 +1,5 @@
-import { createContext, useEffect, useReducer } from "react";
+import { useEffect, useReducer } from "react";
+import { AuthContext, AuthState } from "./AuthContext";
 
 type AuthUser = {
 	createdAt: string;
@@ -10,21 +11,13 @@ type AuthUser = {
 	_id: string;
 };
 
-type AuthPayload = {
+export type AuthPayload = {
 	token: string;
 } & AuthUser;
 
-type AuthState = {
-	user: AuthPayload | null;
-};
-
-type AuthAction = { type: "LOGIN"; payload: AuthPayload } | { type: "LOGOUT" };
-
-type AuthContextType = {
-	dispatch: React.Dispatch<AuthAction>;
-} & AuthState;
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export type AuthAction =
+	| { type: "LOGIN"; payload: AuthPayload }
+	| { type: "LOGOUT" };
 
 const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 	switch (action.type) {
@@ -37,7 +30,7 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 	}
 };
 
-const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(authReducer, { user: null });
 
 	console.log("AuthContext state: ", state);
@@ -59,5 +52,3 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 		</AuthContext.Provider>
 	);
 };
-
-export { AuthContextProvider, AuthContext };

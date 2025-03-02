@@ -4,12 +4,12 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 
 import "./index.css";
-import { AuthContextProvider } from "./context/authContext";
+import { AuthProvider } from "./context/AuthProvider";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<AuthContextProvider>
+		<AuthProvider>
 			<App />
-		</AuthContextProvider>
+		</AuthProvider>
 	</StrictMode>
 );
