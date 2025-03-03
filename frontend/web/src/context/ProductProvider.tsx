@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react";
-import { product } from "../api/product";
-import { ProductContext, ProductState } from "./ProductContext";
+import { product } from "@/api/product";
+import { ProductContext, ProductState } from "@/context/ProductContext";
 
 export type Product = {
 	_id: string;
@@ -28,7 +28,7 @@ export type ProductAction =
 
 const ProductReducer = (
 	state: ProductState,
-	action: ProductAction
+	action: ProductAction,
 ): ProductState => {
 	switch (action.type) {
 		case "SET":

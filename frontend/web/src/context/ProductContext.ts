@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Product, ProductAction } from "./ProductProvider";
+import { ProductAction, Product } from "@/context/ProductProvider";
 
 export type ProductState = {
 	products: Product[];
@@ -10,6 +10,5 @@ type ProductContextType = {
 } & ProductState;
 
 export const ProductContext = createContext<ProductContextType | undefined>(
-	undefined
+	undefined,
 );
-
