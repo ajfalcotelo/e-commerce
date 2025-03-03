@@ -22,7 +22,7 @@ const SignUp = () => {
 	return (
 		<form className="w-[55%] space-y-6" onSubmit={handleSubmit}>
 			<header className="space-y-4">
-				<h2 className="font-medium text-5xl">{AUTHFORM.SIGNUP.TITLE}</h2>
+				<h2 className="text-5xl font-medium">{AUTHFORM.SIGNUP.TITLE}</h2>
 				<p className="font-medium">{AUTHFORM.SUBTITLE}</p>
 			</header>
 
@@ -60,14 +60,14 @@ const SignUp = () => {
 							</span>
 						</Button>
 					</div>
-					<div className="text-center space-x-4">
-						<span className="text-black text-opacity-70 font-medium">
+					<div className="space-x-4 text-center">
+						<span className="font-medium text-black/70">
 							Already have an account?
 						</span>
 						<LinkButton
 							variant={"none"}
 							route={CTA.AUTH.SIGNUP.LOGIN.ACTION}
-							className="text-black text-opacity-70 text-xl border-b-2 border-opacity-40 rounded-none px-0 py-1 hover:text-secondary-cute-crab"
+							className="hover:text-secondary-cute-crab rounded-none border-b-2 border-b-black/40 px-0 py-1 text-xl text-black/70"
 						>
 							{CTA.AUTH.SIGNUP.LOGIN.TITLE}
 						</LinkButton>

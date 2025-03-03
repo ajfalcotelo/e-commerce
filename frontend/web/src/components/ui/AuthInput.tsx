@@ -8,8 +8,8 @@ export const AuthInput = ({ className, ...props }: AuthInputProps) => {
 	return (
 		<input
 			className={cn(
-				"box-border h-9 border-b border-b-black py-2 border-opacity-50 text-primary-black focus:outline-none focus:border-b-2 placeholder:text-black placeholder:text-opacity-40 ",
-				className
+				"text-primary-black box-border h-9 border-b border-b-black/50 py-2 placeholder:text-black/70 focus:border-b-2 focus:outline-hidden",
+				className,
 			)}
 			{...props}
 		/>

@@ -25,7 +25,7 @@ export const Footer = ({ className, ...props }: FooterProps) => {
 							name=""
 							id=""
 							placeholder={FOOTER.EXCLUSIVE.INPUT.NAME}
-							className="p-3 pl-4 bg-transparent focus:outline-none"
+							className="p-3 pl-4 bg-transparent focus:outline-hidden"
 						/>
 						<button type="button" className="p-2">
 							<FOOTER.EXCLUSIVE.INPUT.ICON className="stroke-primary-white" />

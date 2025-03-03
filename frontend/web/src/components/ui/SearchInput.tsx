@@ -14,7 +14,7 @@ const SearchInput = () => {
 				type="search"
 				placeholder={NAV.SEARCH.NAME}
 				className="
-                    bg-transparent p-2 text-sm w-64 focus:outline-none
+                    bg-transparent p-2 text-sm w-64 focus:outline-hidden
                     search-cancel:appearance-none
                 "
 			/>
