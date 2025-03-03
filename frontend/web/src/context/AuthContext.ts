@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { AuthAction, AuthPayload } from "./AuthProvider";
+import { AuthAction, AuthPayload } from "@/context/AuthProvider";
 
 export type AuthState = {
 	user: AuthPayload | null;
@@ -10,5 +10,5 @@ type AuthContextType = {
 } & AuthState;
 
 export const AuthContext = createContext<AuthContextType | undefined>(
-	undefined
+	undefined,
 );

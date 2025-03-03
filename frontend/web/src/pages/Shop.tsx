@@ -1,17 +1,17 @@
-import ImageCarousel from "../components/ImageCarousel";
-import Categories from "../components/Categories";
-import ShopSection from "../components/ShopSection";
+import { ImageCarousel } from "@/components/ImageCarousel";
+import { Categories } from "@/components/Categories";
+import { ShopSection } from "@/components/ShopSection";
 
-const Shop = () => {
+export const Shop = () => {
 	return (
 		<div className="mx-[16vw]">
 			<div className="grid grid-cols-[14rem_1fr]">
-				<Categories className="pt-10 pr-4 border-r border-border-grey" />
+				<Categories className="border-border-grey border-r pt-10 pr-4" />
 				<ImageCarousel className="mt-10 ml-11 h-80" />
 			</div>
 
 			{/* ShopSections with colored line between gap */}
-			<div className="divide-y divide-border-grey">
+			<div className="divide-border-grey divide-y">
 				<ShopSection
 					title="Section Testing"
 					tag="Today's"
@@ -35,5 +35,3 @@ const Shop = () => {
 		</div>
 	);
 };
-
-export default Shop;

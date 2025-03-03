@@ -1,6 +1,6 @@
 import { cva } from "class-variance-authority";
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
 	"p-4 font-medium rounded-md text-center transition-all",
 	{
 		variants: {
@@ -18,5 +18,3 @@ const buttonVariants = cva(
 		},
 	},
 );
-
-export default buttonVariants;

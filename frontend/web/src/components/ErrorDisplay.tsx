@@ -1,16 +1,20 @@
-import { cn } from "../utils/cn";
+import { cn } from "@/lib/utils";
 
 type ErrorDisplayProps = {
 	children: React.ReactNode;
 	className?: string;
 };
 
-const ErrorDisplay = ({ children, className, ...props }: ErrorDisplayProps) => {
+export const ErrorDisplay = ({
+	children,
+	className,
+	...props
+}: ErrorDisplayProps) => {
 	return (
 		<div
 			className={cn(
-				"p-4 border-2 border-r-secondary-cute-crab shadow-md text-secondary-cute-crab font-inter font-semibold text-lg text-center",
-				className
+				"border-r-secondary-cute-crab text-secondary-cute-crab font-inter border-2 p-4 text-center text-lg font-semibold shadow-md",
+				className,
 			)}
 			{...props}
 		>
@@ -18,5 +22,3 @@ const ErrorDisplay = ({ children, className, ...props }: ErrorDisplayProps) => {
 		</div>
 	);
 };
-
-export default ErrorDisplay;

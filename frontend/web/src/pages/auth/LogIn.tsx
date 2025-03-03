@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { AuthInput } from "../../components/ui/AuthInput";
-import { Button } from "../../components/ui/Button";
-import { AUTHFORM, CTA } from "../../utils/constant";
-import useLogIn from "../../hooks/useLogIn";
-import ErrorDisplay from "../../components/ErrorDisplay";
+import { AuthInput } from "@/components/ui/AuthInput";
+import { Button } from "@/components/ui/Button";
+import { AUTHFORM, CTA } from "@/utils/constant";
+import { useLogIn } from "@/hooks/useLogIn";
+import { ErrorDisplay } from "@/components/ErrorDisplay";
 
-const Login = () => {
+export const Login = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const { login, isLoading, error } = useLogIn({ email, password });
@@ -20,7 +20,7 @@ const Login = () => {
 	return (
 		<form className="w-[55%] space-y-6" onSubmit={handleSubmit}>
 			<header className="space-y-4">
-				<h2 className="font-medium text-5xl">{AUTHFORM.LOGIN.TITLE}</h2>
+				<h2 className="text-5xl font-medium">{AUTHFORM.LOGIN.TITLE}</h2>
 				<p className="font-medium">{AUTHFORM.SUBTITLE}</p>
 			</header>
 
@@ -50,5 +50,3 @@ const Login = () => {
 		</form>
 	);
 };
-
-export default Login;

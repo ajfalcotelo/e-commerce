@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { AuthInput } from "../../components/ui/AuthInput";
-import { Button } from "../../components/ui/Button";
-import LinkButton from "../../components/ui/LinkButton";
-import { AUTHFORM, CTA } from "../../utils/constant";
-import useSignUp from "../../hooks/useSignUp";
-import ErrorDisplay from "../../components/ErrorDisplay";
+import { AuthInput } from "@/components/ui/AuthInput";
+import { Button } from "@/components/ui/Button";
+import { LinkButton } from "@/components/ui/LinkButton";
+import { AUTHFORM, CTA } from "@/utils/constant";
+import { useSignUp } from "@/hooks/useSignUp";
+import { ErrorDisplay } from "@/components/ErrorDisplay";
 
-const SignUp = () => {
+export const Signup = () => {
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -77,5 +77,3 @@ const SignUp = () => {
 		</form>
 	);
 };
-
-export default SignUp;

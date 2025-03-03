@@ -1,6 +1,6 @@
 import { useState } from "react";
-import useAuthContext from "./useAuthContext";
-import { auth, AuthError } from "../api/auth";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { auth, AuthError } from "@/api/auth";
 
 type SignIn = {
 	name: string;
@@ -8,7 +8,7 @@ type SignIn = {
 	password: string;
 };
 
-const useSignUp = ({ name, email, password }: SignIn) => {
+export const useSignUp = ({ name, email, password }: SignIn) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const { dispatch } = useAuthContext();
@@ -36,5 +36,3 @@ const useSignUp = ({ name, email, password }: SignIn) => {
 
 	return { signup, isLoading, error };
 };
-
-export default useSignUp;

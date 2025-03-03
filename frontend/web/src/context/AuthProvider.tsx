@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from "react";
-import { AuthContext, AuthState } from "./AuthContext";
+import { AuthContext, AuthState } from "@/context/AuthContext";
 
 type AuthUser = {
 	createdAt: string;

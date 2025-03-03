@@ -1,7 +1,7 @@
 import { AnchorHTMLAttributes } from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@/lib/utils";
 import { NavLink } from "react-router";
-import { NAV } from "../../utils/constant";
+import { NAV } from "@/utils/constant";
 
 type HeaderLinkProps = {
 	route: string;

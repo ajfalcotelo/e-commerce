@@ -1,6 +1,6 @@
-import useAuthContext from "./useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
-const useLogOut = () => {
+export const useLogOut = () => {
 	const { dispatch } = useAuthContext();
 
 	const logout = () => {
@@ -10,5 +10,3 @@ const useLogOut = () => {
 
 	return { logout };
 };
-
-export default useLogOut;

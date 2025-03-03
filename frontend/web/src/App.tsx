@@ -1,17 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 
 // Pages
-import { ROUTES } from "./utils/constant";
-import { Contacts } from "./pages/Contacts";
-import { About } from "./pages/About";
-import Shop from "./pages/Shop";
-import NotFound from "./pages/NotFound";
-import Login from "./pages/auth/LogIn";
-import SignUp from "./pages/auth/SignUp";
+import { ROUTES } from "@/utils/constant";
+import { Contacts } from "@/pages/Contacts";
+import { About } from "@/pages/About";
+import { Shop } from "@/pages/Shop";
+import { NotFound } from "@/pages/NotFound";
+import { Login } from "@/pages/auth/Login";
+import { Signup } from "@/pages/auth/Signup";
 
 // Layouts
-import RootLayout from "./layouts/RootLayout";
-import AuthLayout from "./layouts/AuthLayout";
+import { RootLayout } from "@/layouts/RootLayout";
+import { AuthLayout } from "@/layouts/AuthLayout";
 
 const router = createBrowserRouter([
 	{
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
 					},
 					{
 						path: ROUTES.AUTH.SIGNUP,
-						element: <SignUp />,
+						element: <Signup />,
 					},
 				],
 			},
@@ -68,8 +68,6 @@ const router = createBrowserRouter([
 	},
 ]);
 
-const App = () => {
+export const App = () => {
 	return <RouterProvider router={router} />;
 };
-
-export default App;

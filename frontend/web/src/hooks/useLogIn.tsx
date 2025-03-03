@@ -1,13 +1,13 @@
 import { useState } from "react";
-import useAuthContext from "./useAuthContext";
-import { AuthError, auth } from "../api/auth";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { AuthError, auth } from "@/api/auth";
 
 type LogIn = {
 	email: string;
 	password: string;
 };
 
-const useLogIn = ({ email, password }: LogIn) => {
+export const useLogIn = ({ email, password }: LogIn) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 	const { dispatch } = useAuthContext();
@@ -31,5 +31,3 @@ const useLogIn = ({ email, password }: LogIn) => {
 
 	return { login, isLoading, error };
 };
-
-export default useLogIn;
