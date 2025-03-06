@@ -1,8 +1,14 @@
 import { ImageCarousel } from "@/components/ImageCarousel";
 import { Categories } from "@/components/Categories";
 import { ShopSection } from "@/components/ShopSection";
+import { CardCarouselSection } from "@/components/CardCarouselSection";
+import { ProductCard } from "@/components/ProductCard";
+import { useProductContext } from "@/hooks/useProductContext";
 
 export const Shop = () => {
+	const { products } = useProductContext();
+	const discountedProducts = products.filter((product) => product.discount);
+
 	return (
 		<div className="mx-[16vw]">
 			<div className="grid grid-cols-[14rem_1fr]">
@@ -12,15 +18,16 @@ export const Shop = () => {
 
 			{/* ShopSections with colored line between gap */}
 			<div className="divide-border-grey divide-y">
-				<ShopSection
+				<CardCarouselSection
 					title="Section Testing"
 					tag="Today's"
 					navMode="horizontal"
 					viewAllBtn
 					viewAllCategory="Eletronics"
-				>
-					Test
-				</ShopSection>
+					options={{ watchDrag: false, slidesToScroll: 4 }}
+					data={discountedProducts}
+					renderItem={(item) => <ProductCard product={item} key={item._id} />}
+				/>
 				<ShopSection title="Section Testing 2" tag="Tomorrow's" navMode="all">
 					Test
 				</ShopSection>
@@ -28,6 +35,8 @@ export const Shop = () => {
 					title="Section Testing 3"
 					tag="Yesterday's"
 					navMode="horizontal"
+					viewAllBtn
+					viewAllCategory="Test"
 				>
 					Test
 				</ShopSection>

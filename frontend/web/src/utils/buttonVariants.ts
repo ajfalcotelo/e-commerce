@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority";
 
 export const buttonVariants = cva(
-	"p-4 font-medium rounded-md text-center transition-all",
+	"p-4 font-medium rounded-md text-center transition-all cursor-pointer",
 	{
 		variants: {
 			variant: {
