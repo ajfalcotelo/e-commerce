@@ -5,7 +5,11 @@ const productSchema = new mongoose.Schema(
     title: { type: String, required: true },
     price: { type: Number, required: true },
     description: { type: String, required: true },
-    category: { type: String, required: true },
+    category: {
+      type: String,
+      required: true,
+      enum: ["women's clothing", "men's clothing", "electronics", "jewelry"],
+    },
     image: { type: [String], required: true },
     rating: {
       count: { type: Number, default: 0 },
@@ -15,17 +19,21 @@ const productSchema = new mongoose.Schema(
         validate: {
           validator: function (value) {
             // If rate is greater than 0, count must be at least 1
-            if (this.count >= 1 && value >= 1) {
-              return false;
-            } else if (value === 0) {
-              return false;
-            } else {
+            if (this.rating.count >= 1 && value >= 1) {
               return true;
+            } else if (value === 0) {
+              return true;
+            } else {
+              return false;
             }
           },
-          message: "count must be at least 1 if rate exists",
+          message: "count must be at least 1 if rate is greater than 1",
         },
       },
+    },
+    discount: {
+      type: Number,
+      default: null,
     },
   },
   {

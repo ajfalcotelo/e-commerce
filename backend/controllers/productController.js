@@ -1,11 +1,10 @@
+import mongoose from "mongoose";
 import Product from "../models/Product.js";
 
 // helper functions
 const checkIdExists = async (id) => {
   try {
     const matchedId = await Product.findById(id);
-    console.log("id: ", matchedId);
-
     if (!matchedId) {
       const error = new Error("Id does not exist");
       error.status = 400;
@@ -18,16 +17,35 @@ const checkIdExists = async (id) => {
   }
 };
 
+const missingFieldsError = (missingFields) => {
+  if (missingFields.length) {
+    console.log("test");
+    const error = new Error(
+      `Fill up all required fields: ${missingFields.join(", ")}`
+    );
+    error.status = 400;
+    return next(error);
+  }
+};
+
+const requiredFields = [
+  "title",
+  "price",
+  "description",
+  "category",
+  "image",
+  "rating",
+];
+
 // @desc Fetch all products
 // @route GET /api/products
 export const getProducts = async (req, res, next) => {
   try {
     const products = await Product.find({});
-    res.status(200).json({ products });
+    res.status(200).json(products);
   } catch (error) {
     console.error(error);
     const err = new Error("Failed to GET all products");
-    err.status = 500;
     return next(err);
   }
 };
@@ -36,13 +54,14 @@ export const getProducts = async (req, res, next) => {
 // @route GET /api/products/:product_id
 export const getProductById = async (req, res, next) => {
   const { id } = req.params;
-  const error = await checkIdExists(id);
+
   try {
+    const error = await checkIdExists(id);
     if (error) {
       return next(error);
     }
     const product = await Product.findById(id);
-    res.status(200).json({ product });
+    res.status(200).json(product);
   } catch (error) {
     console.error(error);
     const err = new Error("Failed to GET one product");
@@ -53,44 +72,19 @@ export const getProductById = async (req, res, next) => {
 // @desc Insert one or more products
 // @route POST /api/products
 export const postOneProduct = async (req, res, next) => {
-  const requiredFields = [
-    "title",
-    "price",
-    "description",
-    "category",
-    "image",
-    "rating",
-  ];
-
-  // USED BY BOTH FUNCTIONS
-  const missingFieldsError = (array) => {
-    if (array.length) {
-      const error = new Error(
-        `Fill up all required fields: ${array.join(", ")}`
-      );
-      error.status = 400;
-      return next(error);
-    }
-  };
-
   // WILL TRIGGER WHEN req.body IS A SINGLE OBJECT
   const postSingle = async () => {
-    const { product_id, title, price, description, category, image, rating } =
-      req.body;
-    try {
-      const missingFields = requiredFields.filter((field) => !req.body[field]);
-      missingFieldsError(missingFields);
+    const missingFields = requiredFields.filter((field) => !req.body[field]);
+    missingFieldsError(missingFields);
 
-      return await Product.create({
-        product_id,
-        title,
-        price,
-        description,
-        category,
-        image,
-        rating,
-      });
+    try {
+      const product = await Product.create(req.body);
+      res.status(200).json(product);
     } catch (error) {
+      if (error instanceof mongoose.Error.ValidationError) {
+        const err = new Error(error.message);
+        return next(err);
+      }
       console.log(error);
       const err = new Error("Failed to POST one product");
       return next(err);
@@ -112,6 +106,10 @@ export const postOneProduct = async (req, res, next) => {
     try {
       return await Product.insertMany(req.body);
     } catch (error) {
+      if (error instanceof mongoose.Error.ValidationError) {
+        const err = new Error(error.message);
+        return next(err);
+      }
       console.log(error);
       const err = new Error("Failed to POST multiple products");
       return next(err);
@@ -120,11 +118,11 @@ export const postOneProduct = async (req, res, next) => {
 
   // MAIN LOGIC
   try {
-    const newProduct = Array.isArray(req.body)
+    const product = Array.isArray(req.body)
       ? await postMany()
       : await postSingle();
 
-    res.status(201).json({ ...newProduct });
+    res.status(201).json(product);
   } catch (error) {
     console.log(error);
     const err = new Error("Failed to POST product");
@@ -135,41 +133,21 @@ export const postOneProduct = async (req, res, next) => {
 // @desc Update whole of one product
 // @route PUT /api/products/:id
 export const putProduct = async (req, res, next) => {
-  const requiredFields = [
-    "title",
-    "price",
-    "description",
-    "category",
-    "image",
-    "rating",
-  ];
-
   const missingFields = requiredFields.filter((field) => !req.body[field]);
-  if (missingFields.length) {
-    const error = new Error(
-      `Fill up all required fields: ${missingFields.join(", ")}`
-    );
-    error.status = 400;
-    return next(error);
-  }
+  missingFieldsError(missingFields);
 
-  const { product_id, title, price, description, category, image, rating } =
-    req.body;
   const { id } = req.params;
-  const error = await checkIdExists(id);
 
   try {
+    const error = await checkIdExists(id);
     if (error) {
       return next(error);
     }
+
     const oldProduct = await Product.findById(id);
-    const updatedProduct = await Product.findByIdAndUpdate(
-      id,
-      { product_id, title, price, description, category, image, rating },
-      {
-        new: true,
-      }
-    );
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
     res
       .status(200)
       .json({ "old product": oldProduct, "updated product": updatedProduct });
@@ -185,12 +163,13 @@ export const putProduct = async (req, res, next) => {
 export const patchProduct = async (req, res, next) => {
   const update = req.body;
   const { id } = req.params;
-  const error = await checkIdExists(id);
 
   try {
+    const error = await checkIdExists(id);
     if (error) {
       return next(error);
     }
+
     const oldProduct = await Product.findById(id);
     const updatedProduct = await Product.findByIdAndUpdate(id, update, {
       new: true,
@@ -209,18 +188,18 @@ export const patchProduct = async (req, res, next) => {
 // @route DELETE /api/products/:id
 export const deleteProductById = async (req, res, next) => {
   const { id } = req.params;
-  const error = await checkIdExists(id);
 
   try {
+    const error = await checkIdExists(id);
     if (error) {
       return next(error);
     }
+
     const deletedProduct = await Product.findByIdAndDelete(id);
     res.status(200).json({ "deleted product": deletedProduct });
   } catch (error) {
     console.log(error);
     const err = new Error("Failed to DELETE product");
-    err.status = 500;
     next(err);
   }
 };
