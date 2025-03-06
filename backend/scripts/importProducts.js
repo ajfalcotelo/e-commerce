@@ -1,4 +1,3 @@
-import axios from "axios";
 import Product from "../models/Product.js";
 import connectDB from "../config/db.js";
 import mongoose from "mongoose";
@@ -9,18 +8,31 @@ import mongoose from "mongoose";
 
 const importProducts = async () => {
   try {
-    connectDB(); // Ensure MongoDB is connected
+    await connectDB(); // Ensure MongoDB is connected
     console.log("Connected to MongoDB.");
 
-    const response = await axios.get("https://fakestoreapi.com/products");
-    const products = response.data;
+    Product.collection.drop();
+
+    const response = await fetch("https://fakestoreapi.com/products");
+    const products = await response.json();
+
+    const discounts = [10, 15, 20, 25, 30, 35, 40];
 
     // removes id, in favor of _id
     // converts image string into a string array to allow more image sources
-    const newProducts = products.map(({ id, image, ...props }) => ({
-      ...props,
-      image: [image],
-    }));
+    // adds discount key with random value
+    // change jewelery to jewelry
+    const newProducts = products.map(({ id, image, category, ...props }) => {
+      const newCategory = category === "jewelery" ? "jewelry" : category;
+      const randomDiscount =
+        discounts[Math.floor(Math.random() * discounts.length)];
+      return {
+        ...props,
+        category: newCategory,
+        image: [image],
+        discount: randomDiscount,
+      };
+    });
 
     await Product.insertMany(newProducts);
     console.log("Products Imported Successfully!");
