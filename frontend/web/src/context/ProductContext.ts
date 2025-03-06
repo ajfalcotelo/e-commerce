@@ -1,13 +1,25 @@
 import { createContext } from "react";
-import { ProductAction, Product } from "@/context/ProductProvider";
 
-export type ProductState = {
-	products: Product[];
+export type Product = {
+	_id: string;
+	title: string;
+	price: number;
+	description: string;
+	category: string;
+	image: string[];
+	discount: number;
+	rating: {
+		count: number;
+		rate: number;
+	};
+	createdAt: string;
+	updatedAt: string;
 };
 
 type ProductContextType = {
-	dispatch: React.Dispatch<ProductAction>;
-} & ProductState;
+	products: Product[];
+	setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+};
 
 export const ProductContext = createContext<ProductContextType | undefined>(
 	undefined,

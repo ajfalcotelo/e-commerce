@@ -1,72 +1,64 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { product } from "@/api/product";
-import { ProductContext, ProductState } from "@/context/ProductContext";
-
-export type Product = {
-	_id: string;
-	title: string;
-	price: number;
-	description: string;
-	category: string;
-	image: string[];
-	rating: {
-		count: number;
-		rate: number;
-	};
-	createdAt: string;
-	updatedAt: string;
-};
-
-export type ProductAction =
-	| {
-			type: "SET";
-			payload: Product[];
-	  }
-	| {
-			type: "GET" | "DISCONNECT";
-	  };
-
-const ProductReducer = (
-	state: ProductState,
-	action: ProductAction,
-): ProductState => {
-	switch (action.type) {
-		case "SET":
-			return { products: action.payload };
-		case "GET":
-		default:
-			return state;
-	}
-};
+import { Product, ProductContext } from "@/context/ProductContext";
 
 export const ProductProvider = ({
 	children,
 }: {
 	children: React.ReactNode;
 }) => {
-	const [state, dispatch] = useReducer(ProductReducer, { products: [] });
+	const [products, setProducts] = useState<Product[]>([]);
 
-	console.log("ProductContext state: ", state);
+	console.log("ProductContext products: ", products);
+
+	const productMemo = useMemo(() => ({ products, setProducts }), [products]);
 
 	useEffect(() => {
-		const getProducts = async () => {
-			const getLocalProducts = localStorage.getItem("products");
-			if (getLocalProducts) {
-				dispatch({ type: "SET", payload: JSON.parse(getLocalProducts) });
-				return;
-			}
+		const fetchProducts = async () => {
+			try {
+				const cachedProduct = localStorage.getItem("products");
 
-			const response = await product.get("/");
-			const products = response.data.products;
-			localStorage.setItem("products", JSON.stringify(products));
-			dispatch({ type: "SET", payload: products });
+				if (cachedProduct === "undefined") {
+					localStorage.removeItem("products");
+				}
+
+				const cachedProductParsed: Product[] | null = cachedProduct
+					? JSON.parse(cachedProduct)
+					: null;
+				const cachedTimestamp = Number(
+					localStorage.getItem("productsTimestamp"),
+				);
+
+				const now = Date.now();
+				const cacheDuration = 0.5 * 60 * 60 * 1000; // 30 mins
+
+				// Use cachedProduct as state for as long as cachedDuration
+				if (
+					cachedProductParsed &&
+					cachedTimestamp &&
+					now - cachedTimestamp < cacheDuration
+				) {
+					console.log("ProductContext load cache");
+					setProducts(cachedProductParsed);
+					return;
+				}
+
+				// Refreshes localStorage after cachedDuration
+				console.log("ProductContext download data");
+				const response = await product.get("/");
+				localStorage.setItem("products", JSON.stringify(response.data));
+				localStorage.setItem("productsTimestamp", now.toString());
+				setProducts(response.data);
+			} catch (error) {
+				console.error("Error fetching products:", error);
+			}
 		};
 
-		getProducts();
+		fetchProducts();
 	}, []);
 
 	return (
-		<ProductContext.Provider value={{ ...state, dispatch }}>
+		<ProductContext.Provider value={productMemo}>
 			{children}
 		</ProductContext.Provider>
 	);
