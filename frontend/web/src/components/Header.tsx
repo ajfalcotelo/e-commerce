@@ -16,7 +16,10 @@ export const Header = () => {
 	};
 
 	return (
-		<header className="border-b-border-grey flex h-24 flex-row items-center justify-between border-b px-[16vw]">
+		<header
+			className="flex h-24 flex-row items-center justify-between border-b border-b-black/30
+				px-[16vw]"
+		>
 			<HeaderLink
 				route={NAV.HOME.ROUTE}
 				className="font-inter text-4xl font-bold text-black select-none"

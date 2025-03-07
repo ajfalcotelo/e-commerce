@@ -23,11 +23,11 @@ type viewAllButtonType =
 type CardCarouselSectionProps<T> = {
 	title: string;
 	tag: string;
-	navMode: "horizontal" | "all" | "none";
 	className?: string;
 	options?: EmblaOptionsType;
-	data: T[];
-	renderItem: (item: T) => React.ReactNode;
+	dataSet: T[];
+	rows: number;
+	renderData: (data: T) => React.ReactNode;
 } & ButtonHTMLAttributes<HTMLButtonElement> &
 	viewAllButtonType;
 
@@ -38,8 +38,9 @@ export const CardCarouselSection = <T,>({
 	viewAllBtn,
 	viewAllCategory,
 	options,
-	data,
-	renderItem,
+	dataSet,
+	renderData,
+	rows,
 }: CardCarouselSectionProps<T>) => {
 	const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", ...options });
 
@@ -65,7 +66,12 @@ export const CardCarouselSection = <T,>({
 					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
 				</div>
 			</div>
-			<CardCarousel data={data} emblaRef={emblaRef} renderItem={renderItem} />
+			<CardCarousel
+				dataSet={dataSet}
+				emblaRef={emblaRef}
+				renderData={renderData}
+				rows={rows}
+			/>
 			{viewAllBtn && (
 				<Button className="mx-auto mt-16 flex h-14 w-60 items-center justify-center">
 					View All {viewAllCategory}
