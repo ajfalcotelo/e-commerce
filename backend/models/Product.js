@@ -8,7 +8,16 @@ const productSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["women's clothing", "men's clothing", "electronics", "jewelry"],
+      enum: [
+        "women-fashion",
+        "men-fashion",
+        "electronics",
+        "jewelry",
+        "beauty",
+        "home",
+        "sports",
+        "lifestyle",
+      ],
     },
     image: { type: [String], required: true },
     rating: {

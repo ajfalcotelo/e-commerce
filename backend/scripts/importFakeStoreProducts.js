@@ -6,31 +6,48 @@ import mongoose from "mongoose";
 // ONLY NEEDS TO RUN ONCE!
 // no need to run again if fakestoreapi products are already in database
 
-const importProducts = async () => {
+const importFakeStoreProducts = async () => {
   try {
     await connectDB(); // Ensure MongoDB is connected
     console.log("Connected to MongoDB.");
-
-    Product.collection.drop();
 
     const response = await fetch("https://fakestoreapi.com/products");
     const products = await response.json();
 
     const discounts = [10, 15, 20, 25, 30, 35, 40];
 
-    // removes id, in favor of _id
     // converts image string into a string array to allow more image sources
-    // adds discount key with random value
+    // adds random discount with random value
     // change jewelery to jewelry
-    const newProducts = products.map(({ id, image, category, ...props }) => {
-      const newCategory = category === "jewelery" ? "jewelry" : category;
-      const randomDiscount =
-        discounts[Math.floor(Math.random() * discounts.length)];
+    const newProducts = products.map(({ image, category, ...props }, i) => {
+      let newCategory;
+      switch (category) {
+        case "men's clothing":
+          newCategory = "men-fashion";
+          break;
+        case "women's clothing":
+          newCategory = "women-fashion";
+          break;
+        case "jewelery":
+          newCategory = "jewelry";
+          break;
+        default:
+          newCategory = category;
+          break;
+      }
+
+      const applyRandomDiscount = () => {
+        if (Math.random() <= 0.5) {
+          const discountIndex = Math.floor(Math.random() * discounts.length);
+          return discounts[discountIndex];
+        }
+      };
+
       return {
         ...props,
         category: newCategory,
         image: [image],
-        discount: randomDiscount,
+        discount: applyRandomDiscount(),
       };
     });
 
@@ -44,6 +61,6 @@ const importProducts = async () => {
   }
 };
 
-importProducts();
+importFakeStoreProducts();
 
-// node --env-file=.env .\scripts\importProducts.js
+// node --env-file=.env .\scripts\importFakeStoreProducts.js

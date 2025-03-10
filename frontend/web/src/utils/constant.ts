@@ -9,15 +9,17 @@ import {
 
 // Temp solution for nested ROUTES
 // idk kung ano pede ipalit
-// since gagamit tayo ng FakeStoreAPI, ito yung categories
 
 export const ROUTES = {
 	ABOUT: "/about",
-	HOME: {
+	SHOP: {
 		ROOT: "/",
 		WOMEN: "/womens",
 		MEN: "/mens",
 		ELECTRONICS: "/electronics",
+		FURNITURE: "/furniture",
+		SPORTS: "/sports",
+		BEAUTY: "/beauty",
 		JEWELRY: "/jewelry",
 	},
 	CONTACT: "/contact",
@@ -60,7 +62,7 @@ export const CTA = {
 
 	BANNER: {
 		TITLE: "ShopNow",
-		ACTION: ROUTES.HOME.ROOT,
+		ACTION: ROUTES.SHOP.ROOT,
 	},
 };
 
@@ -77,11 +79,11 @@ export const AUTHFORM = {
 export const NAV = {
 	LOGO: {
 		NAME: "Exclusive",
-		ROUTE: ROUTES.HOME.ROOT,
+		ROUTE: ROUTES.SHOP.ROOT,
 	},
 	HOME: {
 		NAME: "Home",
-		ROUTE: ROUTES.HOME.ROOT,
+		ROUTE: ROUTES.SHOP.ROOT,
 	},
 	CONTACT: {
 		NAME: "Contact",
@@ -141,7 +143,7 @@ export const FOOTER = {
 		},
 		SHOP: {
 			NAME: "Shop",
-			ROUTE: ROUTES.HOME.ROOT,
+			ROUTE: ROUTES.SHOP.ROOT,
 		},
 	},
 	QLINKS: {

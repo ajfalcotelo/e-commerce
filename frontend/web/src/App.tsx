@@ -18,23 +18,23 @@ const router = createBrowserRouter([
 		element: <RootLayout />,
 		children: [
 			{
-				path: ROUTES.HOME.ROOT,
+				path: ROUTES.SHOP.ROOT,
 				element: <Shop />,
 				children: [
 					{
-						path: ROUTES.HOME.WOMEN,
+						path: ROUTES.SHOP.WOMEN,
 						element: <Shop />,
 					},
 					{
-						path: ROUTES.HOME.MEN,
+						path: ROUTES.SHOP.MEN,
 						element: <Shop />,
 					},
 					{
-						path: ROUTES.HOME.ELECTRONICS,
+						path: ROUTES.SHOP.ELECTRONICS,
 						element: <Shop />,
 					},
 					{
-						path: ROUTES.HOME.JEWELRY,
+						path: ROUTES.SHOP.JEWELRY,
 						element: <Shop />,
 					},
 				],
