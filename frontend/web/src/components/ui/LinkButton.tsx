@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import { cn } from "../../utils/cn";
+import { cn } from "@/lib/utils";
 import { VariantProps } from "class-variance-authority";
-import buttonVariants from "../../utils/buttonVariants";
+import { buttonVariants } from "@/utils/buttonVariants";
 
 type NavLinkButtonProps = {
 	children: React.ReactNode;
@@ -9,7 +9,7 @@ type NavLinkButtonProps = {
 	className?: string;
 } & VariantProps<typeof buttonVariants>;
 
-const LinkButton = ({
+export const LinkButton = ({
 	children,
 	route,
 	variant,
@@ -26,5 +26,3 @@ const LinkButton = ({
 		</Link>
 	);
 };
-
-export default LinkButton;

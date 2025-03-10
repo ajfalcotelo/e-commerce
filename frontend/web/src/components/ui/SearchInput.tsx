@@ -1,22 +1,12 @@
-import { NAV } from "../../utils/constant";
+import { NAV } from "@/utils/constant";
 
-const SearchInput = () => {
+export const SearchInput = () => {
 	return (
-		<div
-			className="
-                  flex flex-row items-center rounded-md h-2/4
-                  bg-secondary-white-smoke
-                  px-4
-                  focus-within:outline focus-within:outline-1 focus-within:outline-primary-black
-              "
-		>
+		<div className="bg-secondary-white-smoke focus-within:outline-primary-black flex h-2/4 flex-row items-center rounded-md px-4 focus-within:outline focus-within:outline-1">
 			<input
 				type="search"
 				placeholder={NAV.SEARCH.NAME}
-				className="
-                    bg-transparent p-2 text-sm w-64 focus:outline-none
-                    search-cancel:appearance-none
-                "
+				className="search-cancel:appearance-none w-64 bg-transparent p-2 text-sm focus:outline-hidden"
 			/>
 			<button className="p-2">
 				<NAV.SEARCH.ICON className="stroke-primary-black" />
@@ -24,5 +14,3 @@ const SearchInput = () => {
 		</div>
 	);
 };
-
-export default SearchInput;

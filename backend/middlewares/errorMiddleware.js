@@ -4,7 +4,10 @@ const errorMiddleware = (err, req, res, next) => {
   if (err.status) {
     res.status(err.status).json({ error: err.message });
   } else {
-    res.status(500).send("Server Error: Something went wrong in the server");
+    res.status(500).json({
+      message: "Something went wrong in the server",
+      error: err.message,
+    });
   }
 };
 

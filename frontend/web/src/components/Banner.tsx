@@ -1,14 +1,14 @@
-import { BANNER, CTA } from "../utils/constant";
-import LinkButton from "./ui/LinkButton";
+import { BANNER, CTA } from "@/utils/constant";
+import { LinkButton } from "@/components/ui/LinkButton";
 
 export const Banner = () => {
 	return (
-		<div className="bg-black h-12 text-primary-white flex justify-center items-center gap-2">
+		<div className="text-primary-white flex h-12 items-center justify-center gap-2 bg-black">
 			<span className="text-sm">{BANNER.TITLE}</span>
 			<LinkButton
 				variant="none"
 				route={CTA.BANNER.ACTION}
-				className="font-medium underline transition-all hover:text-battle-grey"
+				className="hover:text-battle-grey font-medium underline transition-all"
 			>
 				{CTA.BANNER.TITLE}
 			</LinkButton>

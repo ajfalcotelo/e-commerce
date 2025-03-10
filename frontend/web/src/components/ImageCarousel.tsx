@@ -1,11 +1,11 @@
-import { cn } from "../utils/cn";
+import { cn } from "@/lib/utils";
 
 type ImageCarouselProps = {
 	className?: string;
 	children?: React.ReactNode;
 };
 
-const ImageCarousel = ({
+export const ImageCarousel = ({
 	className,
 	children,
 	...props
@@ -16,5 +16,3 @@ const ImageCarousel = ({
 		</div>
 	);
 };
-
-export default ImageCarousel;

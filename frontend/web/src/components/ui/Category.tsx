@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { cn } from "../../utils/cn";
+import { cn } from "@/lib/utils";
 
 type CategoryProps = {
 	className?: string;
@@ -9,20 +9,20 @@ type CategoryProps = {
 
 // NEEDS BETTER DESIGN
 
-const Category = ({ children, route, className }: CategoryProps) => {
+export const Category = ({ children, route, className }: CategoryProps) => {
 	return (
 		<NavLink
 			to={route}
 			className={({ isActive }) => {
 				return cn(
 					{
-						"hover:border-b-primary-black ": !isActive,
+						"hover:border-b-primary-black": !isActive,
 					},
-					"w-full h-7 justify-between border-y border-y-transparent select-none",
+					"h-7 w-full justify-between border-y border-y-transparent select-none",
 					{
-						"border-b-primary-black ": isActive,
+						"border-b-primary-black": isActive,
 					},
-					className
+					className,
 				);
 			}}
 		>
@@ -30,5 +30,3 @@ const Category = ({ children, route, className }: CategoryProps) => {
 		</NavLink>
 	);
 };
-
-export default Category;

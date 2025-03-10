@@ -1,7 +1,7 @@
 import { AnchorHTMLAttributes } from "react";
-import { cn } from "../../utils/cn";
+import { cn } from "@/lib/utils";
 import { NavLink } from "react-router";
-import { NAV } from "../../utils/constant";
+import { NAV } from "@/utils/constant";
 
 type HeaderLinkProps = {
 	route: string;
@@ -25,7 +25,7 @@ export const HeaderLink = ({
 
 				if (isActive) {
 					activeClass =
-						"border-y-2 border-t-transparent border-b-black border-opacity-50 py-2";
+						"border-y-2 border-t-transparent border-b-black/50 py-2";
 
 					if (location.pathname === "/" || route === NAV.HOME.ROUTE) {
 						if (isLogo) {
@@ -35,9 +35,9 @@ export const HeaderLink = ({
 				}
 
 				return cn(
-					"text-base font-medium items-center text-center",
+					"items-center text-center text-base font-medium",
 					activeClass,
-					className
+					className,
 				);
 			}}
 			{...props}

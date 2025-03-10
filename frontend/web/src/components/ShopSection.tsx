@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes } from "react";
-import { cn } from "../utils/cn";
-import { Button } from "./ui/Button";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 
 type viewAllButtonType =
 	| {
@@ -28,13 +28,13 @@ const navModeRender = (navModeSetting: string) => {
 				<div className="flex flex-row gap-3">
 					<button
 						type="button"
-						className="flex justify-center items-center rounded-full bg-secondary-white-smoke size-11"
+						className="bg-secondary-white-smoke flex size-11 items-center justify-center rounded-full"
 					>
 						<img src="/icons_arrow-left.svg" />
 					</button>
 					<button
 						type="button"
-						className="flex justify-center items-center rounded-full bg-secondary-white-smoke size-11"
+						className="bg-secondary-white-smoke flex size-11 items-center justify-center rounded-full"
 					>
 						<img src="/icons_arrow-right.svg" />
 					</button>
@@ -43,7 +43,7 @@ const navModeRender = (navModeSetting: string) => {
 		case "all":
 			return (
 				<Button
-					className="flex flex-row w-40 h-full items-center justify-center"
+					className="flex h-full w-40 flex-row items-center justify-center"
 					variant={"red"}
 				>
 					View All
@@ -55,7 +55,7 @@ const navModeRender = (navModeSetting: string) => {
 	}
 };
 
-const ShopSection = ({
+export const ShopSection = ({
 	className,
 	children,
 	tag,
@@ -66,21 +66,19 @@ const ShopSection = ({
 }: ShopSectionProps) => {
 	return (
 		<div className={cn("flex flex-col py-16 first:mt-16", className)}>
-			<div className="flex items-center h-10 pl-4 mb-6 border-l-[20px] border-l-secondary-cute-crab rounded-md text-secondary-cute-crab text-base font-semibold capitalize">
+			<div className="border-l-secondary-cute-crab text-secondary-cute-crab mb-6 flex h-10 items-center rounded-md border-l-[20px] pl-4 text-base font-semibold capitalize">
 				{tag}
 			</div>
-			<div className="flex flex-row justify-between w-full mb-10">
-				<p className="text-4xl font-inter font-semibold">{title}</p>
+			<div className="mb-10 flex w-full flex-row justify-between">
+				<p className="font-inter text-4xl font-semibold">{title}</p>
 				{navModeRender(navMode)}
 			</div>
 			{children}
 			{viewAllBtn && (
-				<Button className="flex items-center justify-center w-60 h-14 mx-auto mt-16">
+				<Button className="mx-auto mt-16 flex h-14 w-60 items-center justify-center">
 					View All {viewAllCategory}
 				</Button>
 			)}
 		</div>
 	);
 };
-
-export default ShopSection;

@@ -1,7 +1,7 @@
-import { FooterSection } from "./FooterSection";
-import { FOOTER } from "../utils/constant.ts";
-import { FooterLink } from "./ui/FooterLinks.tsx";
-import { cn } from "../utils/cn.ts";
+import { FooterSection } from "@/components/FooterSection";
+import { FOOTER } from "@/utils/constant";
+import { FooterLink } from "@/components/ui/FooterLink";
+import { cn } from "@/lib/utils";
 
 type FooterProps = {
 	className?: string;
@@ -9,23 +9,18 @@ type FooterProps = {
 
 export const Footer = ({ className, ...props }: FooterProps) => {
 	return (
-		<footer className={cn("bg-black w-full h-[32rem]", className)} {...props}>
-			<div className="flex flex-row justify-between gap-2 pt-20 pb-20 pl-32 pr-32">
+		<footer className={cn("h-[32rem] w-full bg-black", className)} {...props}>
+			<div className="flex flex-row justify-between gap-2 pt-20 pr-32 pb-20 pl-32">
 				<FooterSection header="Exclusive">
-					<h2 className="inline-block font-medium text-xl mb-2">Subscribe</h2>
+					<h2 className="mb-2 inline-block text-xl font-medium">Subscribe</h2>
 					<p>{FOOTER.EXCLUSIVE.OFFER}</p>
-					<div
-						className="flex flex-row items-center rounded-md
-                      border border-solid border-primary-white
-                      focus-within:outline focus-within:outline-1 focus-within:outline-primary-white
-                    "
-					>
+					<div className="border-primary-white focus-within:outline-primary-white flex flex-row items-center rounded-md border border-solid focus-within:outline focus-within:outline-1">
 						<input
 							type="text"
 							name=""
 							id=""
 							placeholder={FOOTER.EXCLUSIVE.INPUT.NAME}
-							className="p-3 pl-4 bg-transparent focus:outline-none"
+							className="bg-transparent p-3 pl-4 focus:outline-hidden"
 						/>
 						<button type="button" className="p-2">
 							<FOOTER.EXCLUSIVE.INPUT.ICON className="stroke-primary-white" />
@@ -72,7 +67,7 @@ export const Footer = ({ className, ...props }: FooterProps) => {
 					</FooterLink>
 				</FooterSection>
 				<FooterSection header="Download App">
-					<p className="text-xs text-secondary-white-desert">
+					<p className="text-secondary-white-desert text-xs">
 						{FOOTER.DOWNLOAD.NAME}
 					</p>
 					<div className="grid grid-flow-col grid-cols-2 grid-rows-2">
@@ -84,7 +79,7 @@ export const Footer = ({ className, ...props }: FooterProps) => {
 							<img src={FOOTER.DOWNLOAD.APPSTORE.ICON} />
 						</a>
 					</div>
-					<div className="grid grid-flow-col auto-cols-fr">
+					<div className="grid auto-cols-fr grid-flow-col">
 						<a href={FOOTER.DOWNLOAD.FACEBOOK.ROUTE}>
 							<FOOTER.DOWNLOAD.FACEBOOK.ICON className="stroke-primary-white" />
 						</a>
@@ -100,13 +95,7 @@ export const Footer = ({ className, ...props }: FooterProps) => {
 					</div>
 				</FooterSection>
 			</div>
-			<div
-				className="flex justify-center items-center
-                  w-full py-3
-                  border-t-primary-black border-t-2 text-primary-black
-                  text-sm font-poppins
-                "
-			>
+			<div className="border-t-primary-black text-primary-black font-poppins flex w-full items-center justify-center border-t-2 py-3 text-sm">
 				<p>
 					<span className="text-base">©</span> Copyright rights and lefts
 				</p>
