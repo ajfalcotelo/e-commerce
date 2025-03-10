@@ -15,16 +15,13 @@ export const CardCarousel = <T,>({
 }: CardCarouselProps<T>) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [dataPerRow, setDataPerRow] = useState(4);
-	const [containerWidth, setContainerWidth] = useState<number | undefined>(
-		undefined,
-	);
 
 	const dataSlides = Math.ceil(dataSet.length / (dataPerRow * rows));
 
 	useEffect(() => {
 		const updateDataPerRow = () => {
 			if (!containerRef.current) return;
-			setContainerWidth(containerRef.current.clientWidth);
+			const containerWidth = containerRef.current.clientWidth;
 
 			if (!containerWidth) return;
 			const itemsThatFit = Math.max(1, Math.floor(containerWidth / 278));
@@ -37,7 +34,7 @@ export const CardCarousel = <T,>({
 		const resizeObserver = new ResizeObserver(updateDataPerRow);
 		if (containerRef.current) resizeObserver.observe(containerRef.current);
 		return () => resizeObserver.disconnect(); // Cleanup observer on unmount
-	}, [containerWidth]);
+	}, []);
 
 	const combinedRef = useCallback(
 		(el: HTMLDivElement | null) => {
