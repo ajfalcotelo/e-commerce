@@ -14,13 +14,13 @@ export const Categories = ({ className }: CategoriesProps) => {
 				className,
 			)}
 		>
-			<Category route={ROUTES.SHOP.WOMEN}>Women's Fashion</Category>
-			<Category route={ROUTES.SHOP.MEN}>Men's Fashion</Category>
-			<Category route={ROUTES.SHOP.ELECTRONICS}>Electronics</Category>
-			<Category route={ROUTES.SHOP.FURNITURE}>Furniture</Category>
-			<Category route={ROUTES.SHOP.SPORTS}>Sports</Category>
-			<Category route={ROUTES.SHOP.BEAUTY}>Beauty</Category>
-			<Category route={ROUTES.SHOP.JEWELRY}>Jewelry</Category>
+			<Category route={ROUTES.HOME.WOMEN}>Women's Fashion</Category>
+			<Category route={ROUTES.HOME.MEN}>Men's Fashion</Category>
+			<Category route={ROUTES.HOME.ELECTRONICS}>Electronics</Category>
+			<Category route={ROUTES.HOME.FURNITURE}>Furniture</Category>
+			<Category route={ROUTES.HOME.SPORTS}>Sports</Category>
+			<Category route={ROUTES.HOME.BEAUTY}>Beauty</Category>
+			<Category route={ROUTES.HOME.JEWELRY}>Jewelry</Category>
 		</div>
 	);
 };

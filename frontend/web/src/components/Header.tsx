@@ -1,19 +1,14 @@
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { useLogOut } from "@/hooks/useLogOut";
-import { NAV } from "@/utils/constant";
-import { Button } from "@/components/ui/Button";
+import { NAV, ROUTES } from "@/utils/constant";
 import { HeaderLink } from "@/components/ui/HeaderLink";
 import { LinkButton } from "@/components/ui/LinkButton";
 import { SearchInput } from "@/components/ui/SearchInput";
+import { UserPopover } from "@/components/UserPopover";
+import { Link } from "react-router";
+import { LuShoppingCart } from "react-icons/lu";
 
 export const Header = () => {
 	const { user } = useAuthContext();
-	const { logout } = useLogOut();
-
-	const handleLogOutClick = () => {
-		logout();
-		console.log("Logged Out");
-	};
 
 	return (
 		<header
@@ -36,15 +31,14 @@ export const Header = () => {
 			<SearchInput />
 
 			{user ? (
-				<div className="grid h-10 w-50 grid-cols-[2fr_1fr] place-items-center gap-3">
-					<span>{user.email}</span>
-					<Button
-						className="h-10 w-20"
-						variant={"classic_white"}
-						onClick={handleLogOutClick}
+				<div className="flex w-50 items-center gap-4">
+					<Link
+						to={ROUTES.HOME.CART}
+						className="flex size-8 cursor-pointer items-center justify-center"
 					>
-						Log Out
-					</Button>
+						<LuShoppingCart className="size-10/12" />
+					</Link>
+					<UserPopover />
 				</div>
 			) : (
 				<div className="grid h-10 w-44 grid-cols-2 gap-3">

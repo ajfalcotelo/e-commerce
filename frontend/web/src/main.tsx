@@ -6,13 +6,16 @@ import { App } from "@/App";
 import "./index.css";
 import { AuthProvider } from "@/context/AuthProvider";
 import { ProductProvider } from "@/context/ProductProvider";
+import { CartProvider } from "@/context/CartProvider";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<AuthProvider>
-			<ProductProvider>
-				<App />
-			</ProductProvider>
+			<CartProvider>
+				<ProductProvider>
+					<App />
+				</ProductProvider>
+			</CartProvider>
 		</AuthProvider>
 	</StrictMode>,
 );

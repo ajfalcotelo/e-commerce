@@ -8,6 +8,7 @@ import { Shop } from "@/pages/Shop";
 import { NotFound } from "@/pages/NotFound";
 import { Login } from "@/pages/auth/Login";
 import { Signup } from "@/pages/auth/Signup";
+import { Cart } from "@/pages/Cart";
 
 // Layouts
 import { RootLayout } from "@/layouts/RootLayout";
@@ -18,23 +19,23 @@ const router = createBrowserRouter([
 		element: <RootLayout />,
 		children: [
 			{
-				path: ROUTES.SHOP.ROOT,
+				path: ROUTES.HOME.ROOT,
 				element: <Shop />,
 				children: [
 					{
-						path: ROUTES.SHOP.WOMEN,
+						path: ROUTES.HOME.WOMEN,
 						element: <Shop />,
 					},
 					{
-						path: ROUTES.SHOP.MEN,
+						path: ROUTES.HOME.MEN,
 						element: <Shop />,
 					},
 					{
-						path: ROUTES.SHOP.ELECTRONICS,
+						path: ROUTES.HOME.ELECTRONICS,
 						element: <Shop />,
 					},
 					{
-						path: ROUTES.SHOP.JEWELRY,
+						path: ROUTES.HOME.JEWELRY,
 						element: <Shop />,
 					},
 				],
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
 			{
 				path: ROUTES.ABOUT,
 				element: <About />,
+			},
+			{
+				path: ROUTES.HOME.CART,
+				element: <Cart />,
 			},
 			{
 				path: "*",

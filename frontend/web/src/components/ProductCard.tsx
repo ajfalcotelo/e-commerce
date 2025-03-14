@@ -1,14 +1,21 @@
 import { StarRating } from "@/components/ui/StarRating";
-import { Product } from "@/context/ProductContext";
+import { ProductType } from "@/context/ProductContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { useCart } from "@/hooks/useCart";
+import { ROUTES } from "@/utils/constant";
 import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
 import { FaRegEye, FaRegHeart } from "react-icons/fa6";
+import { useNavigate } from "react-router";
 
 type ProductCardProps = {
-	product: Product;
+	product: ProductType;
 };
 
 export const ProductCard = ({ product }: ProductCardProps) => {
 	const { title, image, rating, discount } = product;
+	const { user } = useAuthContext();
+	const { addItem } = useCart();
+	const navigate = useNavigate();
 	let { price } = product;
 
 	const oldPrice = discount ? price : null;
@@ -17,6 +24,17 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 		const discountedPrice = price - price * (discount / 100);
 		price = roundNumberByDecimalPlace(discountedPrice, 2);
 	}
+
+	const handleAddToCart = async () => {
+		console.log("AddToCart");
+		if (user) {
+			console.log(product);
+			addItem({ product, count: 1 });
+		} else {
+			navigate(ROUTES.AUTH.LOGIN);
+			window.scrollTo(0, 0);
+		}
+	};
 
 	return (
 		<div
@@ -57,6 +75,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 				<button
 					className="text-primary-white absolute bottom-0 h-0 w-full cursor-pointer appearance-none
 						overflow-hidden bg-black font-medium transition-all select-none group-hover:h-10"
+					onClick={handleAddToCart}
 				>
 					Add to cart
 				</button>

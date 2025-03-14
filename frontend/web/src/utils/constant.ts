@@ -12,7 +12,7 @@ import {
 
 export const ROUTES = {
 	ABOUT: "/about",
-	SHOP: {
+	HOME: {
 		ROOT: "/",
 		WOMEN: "/womens",
 		MEN: "/mens",
@@ -21,6 +21,7 @@ export const ROUTES = {
 		SPORTS: "/sports",
 		BEAUTY: "/beauty",
 		JEWELRY: "/jewelry",
+		CART: "/cart",
 	},
 	CONTACT: "/contact",
 	AUTH: {
@@ -62,7 +63,7 @@ export const CTA = {
 
 	BANNER: {
 		TITLE: "ShopNow",
-		ACTION: ROUTES.SHOP.ROOT,
+		ACTION: ROUTES.HOME.ROOT,
 	},
 };
 
@@ -79,11 +80,11 @@ export const AUTHFORM = {
 export const NAV = {
 	LOGO: {
 		NAME: "Exclusive",
-		ROUTE: ROUTES.SHOP.ROOT,
+		ROUTE: ROUTES.HOME.ROOT,
 	},
 	HOME: {
 		NAME: "Home",
-		ROUTE: ROUTES.SHOP.ROOT,
+		ROUTE: ROUTES.HOME.ROOT,
 	},
 	CONTACT: {
 		NAME: "Contact",
@@ -143,7 +144,7 @@ export const FOOTER = {
 		},
 		SHOP: {
 			NAME: "Shop",
-			ROUTE: ROUTES.SHOP.ROOT,
+			ROUTE: ROUTES.HOME.ROOT,
 		},
 	},
 	QLINKS: {
