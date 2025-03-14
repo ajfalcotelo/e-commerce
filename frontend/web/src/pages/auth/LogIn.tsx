@@ -12,8 +12,6 @@ export const Login = () => {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log("Login: ", email, password);
-
 		await login();
 	};
 
@@ -35,7 +33,7 @@ export const Login = () => {
 						placeholder="Password"
 						onChange={(e) => setPassword(e.target.value)}
 					/>
-					{error && <ErrorDisplay className="">{error}</ErrorDisplay>}
+					{error && <ErrorDisplay>{error}</ErrorDisplay>}
 					<div className="flex items-center justify-between">
 						<Button type="submit" className="w-2/5" disabled={isLoading}>
 							{CTA.AUTH.LOGIN.LOGIN_BTN.TITLE}

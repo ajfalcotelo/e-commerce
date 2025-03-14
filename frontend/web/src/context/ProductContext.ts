@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-export type Product = {
+export type ProductType = {
 	_id: string;
 	title: string;
 	price: number;
@@ -17,8 +17,8 @@ export type Product = {
 };
 
 type ProductContextType = {
-	products: Product[];
-	setProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+	products: ProductType[];
+	setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
 };
 
 export const ProductContext = createContext<ProductContextType | undefined>(

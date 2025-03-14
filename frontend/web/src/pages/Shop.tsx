@@ -19,10 +19,10 @@ export const Shop = () => {
 			{/* ShopSections with colored line between gap */}
 			<div className="divide-y divide-black/30">
 				<CardCarouselSection
-					title="Discount Sales"
+					title="Discounted Sales"
 					tag="Today's"
 					viewAllBtn
-					viewAllCategory="Flash Sales"
+					viewAllCategory="Discounted Sales"
 					options={{ watchDrag: false }}
 					dataSet={discountedProducts}
 					rows={1}

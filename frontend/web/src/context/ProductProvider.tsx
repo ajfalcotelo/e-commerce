@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { product } from "@/api/product";
-import { Product, ProductContext } from "@/context/ProductContext";
+import { ProductType, ProductContext } from "@/context/ProductContext";
 
 export const ProductProvider = ({
 	children,
 }: {
 	children: React.ReactNode;
 }) => {
-	const [products, setProducts] = useState<Product[]>([]);
+	const [products, setProducts] = useState<ProductType[]>([]);
 
 	console.log("ProductContext products: ", products);
 
@@ -22,7 +22,7 @@ export const ProductProvider = ({
 					localStorage.removeItem("products");
 				}
 
-				const cachedProductParsed: Product[] | null = cachedProduct
+				const cachedProductParsed: ProductType[] | null = cachedProduct
 					? JSON.parse(cachedProduct)
 					: null;
 				const cachedTimestamp = Number(

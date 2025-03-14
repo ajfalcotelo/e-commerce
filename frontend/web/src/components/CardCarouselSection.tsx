@@ -60,7 +60,7 @@ export const CardCarouselSection = <T,>({
 				{tag}
 			</div>
 			<div className="mb-10 flex w-full flex-row justify-between">
-				<p className="font-inter text-4xl font-semibold">{title}</p>
+				<p className="font-inter text-4xl font-semibold capitalize">{title}</p>
 				<div className="grid grid-cols-2 items-center gap-2">
 					<PrevButton onClick={onPrevButtonClick} disabled={prevBtnDisabled} />
 					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
@@ -73,7 +73,7 @@ export const CardCarouselSection = <T,>({
 				rows={rows}
 			/>
 			{viewAllBtn && (
-				<Button className="mx-auto mt-16 flex h-14 w-60 items-center justify-center">
+				<Button className="mx-auto mt-16 flex h-14 w-60 items-center justify-center capitalize">
 					View All {viewAllCategory}
 				</Button>
 			)}

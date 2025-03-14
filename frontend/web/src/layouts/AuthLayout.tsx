@@ -7,7 +7,6 @@ export const AuthLayout = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log(user);
 		if (user) {
 			navigate("/");
 		}

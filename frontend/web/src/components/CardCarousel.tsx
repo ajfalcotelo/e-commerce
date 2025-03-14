@@ -1,4 +1,11 @@
-import { ForwardedRef, useCallback, useEffect, useRef, useState } from "react";
+import {
+	ForwardedRef,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 
 export type CardCarouselProps<T> = {
 	dataSet: T[];
@@ -16,31 +23,31 @@ export const CardCarousel = <T,>({
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [dataPerRow, setDataPerRow] = useState(4);
 
-	const dataSlides = Math.ceil(dataSet.length / (dataPerRow * rows));
+	const dataSlides = useMemo(
+		() => Math.ceil(dataSet.length / (dataPerRow * rows)),
+		[dataPerRow, dataSet.length, rows],
+	);
+
+	const updateDataPerRow = useCallback(() => {
+		if (!containerRef.current) return;
+		const containerWidth = containerRef.current.clientWidth;
+
+		if (!containerWidth) return;
+		const itemsThatFit = Math.max(1, Math.floor(containerWidth / 278));
+		setDataPerRow(itemsThatFit);
+	}, []);
 
 	useEffect(() => {
-		const updateDataPerRow = () => {
-			if (!containerRef.current) return;
-			const containerWidth = containerRef.current.clientWidth;
-
-			if (!containerWidth) return;
-			const itemsThatFit = Math.max(1, Math.floor(containerWidth / 278));
-			setDataPerRow(itemsThatFit);
-
-			console.log("CardCarousel DataPerRow changed");
-		};
-
+		const handleResize = () => requestAnimationFrame(updateDataPerRow);
 		updateDataPerRow();
-		const resizeObserver = new ResizeObserver(updateDataPerRow);
+		const resizeObserver = new ResizeObserver(handleResize);
 		if (containerRef.current) resizeObserver.observe(containerRef.current);
 		return () => resizeObserver.disconnect(); // Cleanup observer on unmount
-	}, []);
+	}, [updateDataPerRow]);
 
 	const combinedRef = useCallback(
 		(el: HTMLDivElement | null) => {
-			// If emblaRef is a function, call it with the element
 			if (typeof emblaRef === "function") emblaRef(el);
-			// If emblaRef is an object ref, assign to its `current`
 			else if (emblaRef && "current" in emblaRef)
 				(emblaRef as React.MutableRefObject<HTMLDivElement | null>).current =
 					el;
@@ -59,7 +66,7 @@ export const CardCarousel = <T,>({
 			}}
 		>
 			<div className="flex">
-				{[...Array(dataSlides)].map((_, i) => {
+				{Array.from({ length: dataSlides }).map((_, i) => {
 					const slicedData = dataSet.slice(
 						i * dataPerRow * rows,
 						i * dataPerRow * rows + dataPerRow * rows,
@@ -70,7 +77,7 @@ export const CardCarousel = <T,>({
 							className="grid w-full shrink-0 grow-0 basis-full grid-flow-row auto-rows-min
 								justify-center gap-4"
 						>
-							{[...Array(rows)].map((_, i) => {
+							{Array.from({ length: rows }).map((_, i) => {
 								const dicedData = slicedData.slice(
 									i * dataPerRow,
 									i * dataPerRow + dataPerRow,
