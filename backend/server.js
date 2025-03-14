@@ -5,6 +5,7 @@ import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
 import errorMiddleware from "./middlewares/errorMiddleware.js";
 import userRoutes from "./routes/userRoutes.js";
 import cors from "cors";
+import cartRoutes from "./routes/cartRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -25,6 +26,7 @@ app.use(
 );
 
 // Routes
+app.use("/api/cart", cartRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/user", userRoutes);
 
