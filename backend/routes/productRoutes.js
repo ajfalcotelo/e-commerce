@@ -3,7 +3,7 @@ import {
   deleteProductById,
   getProductById,
   getProducts,
-  postOneProduct,
+  postProduct,
   patchProduct,
   putProduct,
 } from "../controllers/productController.js";
@@ -17,7 +17,7 @@ productRoutes.get("/", getProducts);
 productRoutes.get("/:id", getProductById);
 
 // POST a product
-productRoutes.post("/", postOneProduct);
+productRoutes.post("/", postProduct);
 
 // PATCH a product
 productRoutes.patch("/:id", patchProduct);

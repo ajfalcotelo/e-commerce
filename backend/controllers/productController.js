@@ -71,7 +71,7 @@ export const getProductById = async (req, res, next) => {
 
 // @desc Insert one or more products
 // @route POST /api/products
-export const postOneProduct = async (req, res, next) => {
+export const postProduct = async (req, res, next) => {
   // WILL TRIGGER WHEN req.body IS A SINGLE OBJECT
   const postSingle = async () => {
     const missingFields = requiredFields.filter((field) => !req.body[field]);
