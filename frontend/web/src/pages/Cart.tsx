@@ -1,5 +1,6 @@
 import { CartTable } from "@/components/CartTable";
 import { Checkout } from "@/components/Checkout";
+import { ScrollArea } from "@/components/ui/shadcn/scroll-area";
 import { CartType } from "@/context/CartContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCartContext } from "@/hooks/useCartContext";
@@ -29,9 +30,11 @@ export const Cart = () => {
 
 	return (
 		<div className="mx-[16vw] my-20">
-			<div className="grid grid-flow-col gap-x-8">
-				<CartTable />
-				<Checkout subtotal={subtotal} className="border border-black/30" />
+			<div className="grid grid-cols-[2fr_1fr] items-start gap-x-8">
+				<ScrollArea className="h-[440px] border border-black/30">
+					<CartTable />
+				</ScrollArea>
+				<Checkout subtotal={subtotal} className="" />
 			</div>
 		</div>
 	);

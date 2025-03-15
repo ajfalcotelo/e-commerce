@@ -16,10 +16,11 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/shadcn/button";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { CartType } from "@/context/CartContext";
+import { LuX } from "react-icons/lu";
 
 export const CartTable = ({ className, ...props }: { className?: string }) => {
 	const { products, dispatch } = useCartContext();
-	const { updateItem } = useCart();
+	const { updateItem, removeItem } = useCart();
 	const [count, setCount] = useState(1);
 	const [product, setProduct] = useState<ProductType>();
 	const debouncedCount = useDebounce(count);
@@ -76,7 +77,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 	};
 
 	const handleClickDecrement = ({ product, count }: CartType) => {
-		const newCount = count - 1;
+		const newCount = Math.max(1, count - 1);
 		setCount(newCount);
 		setProduct(product);
 		const productIndex = products.findIndex(
@@ -89,15 +90,22 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 		});
 	};
 
+	const handleClickRemove = ({ product, count }: CartType) => {
+		removeItem({ product, count });
+	};
+
 	useEffect(() => {
 		if (!product) return;
 		updateItem({ product, count: debouncedCount });
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedCount]);
 
 	return (
 		<Table className={className} {...props}>
-			<TableHeader>
+			<TableHeader className="bg-secondary sticky top-0 z-20 select-none">
 				<TableRow>
+					<TableHead className="w-10"></TableHead>
 					<TableHead className="w-3/6">Product</TableHead>
 					<TableHead className="w-1/6 text-center">Price</TableHead>
 					<TableHead className="w-1/6 text-center">Quantity</TableHead>
@@ -110,15 +118,25 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 						return (
 							<TableRow key={item.product._id}>
 								<TableCell>
-									<div className="flex flex-row items-center gap-5">
-										<div className="bg-primary-white flex size-14 items-center justify-center rounded-md">
-											<img
-												src={item.product.image[0]}
-												className="max-h-12 max-w-12"
-											/>
-										</div>
-										<p>{item.product.title}</p>
+									<Button
+										variant="ghost"
+										size="icon"
+										className="group hover:bg-secondary-cute-crab size-6 cursor-pointer rounded-full p-1"
+										onClick={() => {
+											handleClickRemove(item);
+										}}
+									>
+										<LuX className="group-hover:text-primary-white size-full transition-all" />
+									</Button>
+								</TableCell>
+								<TableCell className="flex flex-row items-center gap-5">
+									<div className="bg-primary-white flex size-14 items-center justify-center rounded-md">
+										<img
+											src={item.product.image[0]}
+											className="max-h-12 max-w-12"
+										/>
 									</div>
+									<p className="w-[324px] truncate">{item.product.title}</p>
 								</TableCell>
 								<TableCell className="text-center">
 									<span>${item.product.price}</span>
@@ -144,7 +162,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 											onBlur={(e) =>
 												handleInputBlur(item.product, e.target.value)
 											}
-											className="bg-primary-white z-10 w-16 rounded-none"
+											className="bg-primary-white z-10 w-full rounded-none"
 										/>
 										<Button
 											onClick={() => {

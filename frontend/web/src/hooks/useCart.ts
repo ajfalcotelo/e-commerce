@@ -39,7 +39,7 @@ export const useCart = () => {
 		}
 	};
 
-	const removeItem = async (product: ProductType) => {
+	const removeItem = async ({ product, count }: CartType) => {
 		if (!user) return;
 		const userCart = await cart.get("/", {
 			headers: {
@@ -53,7 +53,7 @@ export const useCart = () => {
 			(item) => item.product._id != product._id,
 		);
 
-		dispatch({ type: "SET", payload: [...newProducts] });
+		dispatch({ type: "REMOVE_ITEM", payload: { product, count } });
 		await cart.patch(
 			"/",
 			{ products: newProducts },

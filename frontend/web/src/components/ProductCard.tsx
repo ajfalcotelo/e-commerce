@@ -28,7 +28,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 	const handleAddToCart = async () => {
 		console.log("AddToCart");
 		if (user) {
-			console.log(product);
 			addItem({ product, count: 1 });
 		} else {
 			navigate(ROUTES.AUTH.LOGIN);

@@ -10,7 +10,7 @@ export const Checkout = ({ subtotal, className, ...props }: CheckoutType) => {
 	return (
 		<div
 			className={cn(
-				"flex flex-col items-center gap-5 border-2 border-black px-6 py-8",
+				"flex flex-col items-center gap-5 border border-black/30 px-6 py-8",
 				className,
 			)}
 			{...props}

@@ -18,6 +18,10 @@ export type CartAction =
 			index: number;
 	  }
 	| {
+			type: "REMOVE_ITEM";
+			payload: CartType;
+	  }
+	| {
 			type: "DELETE";
 	  };
 
@@ -33,6 +37,14 @@ const CartReducer = (state: CartState, action: CartAction): CartState => {
 					...state.products.slice(0, action.index),
 					action.payload,
 					...state.products.slice(action.index + 1),
+				],
+			};
+		case "REMOVE_ITEM":
+			return {
+				products: [
+					...state.products.filter(
+						(item) => item.product._id != action.payload.product._id,
+					),
 				],
 			};
 		case "DELETE":
