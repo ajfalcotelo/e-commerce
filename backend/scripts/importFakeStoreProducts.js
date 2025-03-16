@@ -36,18 +36,21 @@ const importFakeStoreProducts = async () => {
           break;
       }
 
-      const applyRandomDiscount = () => {
-        if (Math.random() <= 0.5) {
+      const applyDiscountRateRandom = () => {
+        if (Math.random() <= 0.25) {
           const discountIndex = Math.floor(Math.random() * discounts.length);
           return discounts[discountIndex];
         }
       };
 
+      const getRandomCount = () => Math.ceil(Math.random() * 700);
+
       return {
         ...props,
         category: newCategory,
         image: [image],
-        discount: applyRandomDiscount(),
+        discountRate: applyDiscountRateRandom(),
+        stock: getRandomCount(),
       };
     });
 
