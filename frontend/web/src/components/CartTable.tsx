@@ -23,83 +23,78 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 	const { updateItem, removeItem } = useCart();
 	const [count, setCount] = useState(1);
 	const [product, setProduct] = useState<ProductType>();
-	const debouncedCount = useDebounce(count);
+	const debouncedCount = useDebounce(count, 800);
 
 	const handleInputChange = (product: ProductType, value: string) => {
 		const regex = /[^0-9]+/g;
 		const newValue = value.replace(regex, "");
-		console.log(newValue);
 		const newCount = Number(newValue);
-		console.log(newCount);
 		if (newValue === "") {
 			setCount(0);
 		} else {
 			setCount(newCount);
 		}
 		setProduct(product);
-		const productIndex = products.findIndex(
-			(item) => item.product._id === product._id,
-		);
-		dispatch({
-			type: "UPDATE_ITEM",
-			payload: { product, count: newCount },
-			index: productIndex,
-		});
 	};
 
 	const handleInputBlur = (product: ProductType, value: string) => {
 		const regex = /[\D]+/g;
 		const newCount = Math.max(1, Number(value.replace(regex, "")));
-		setCount(newCount);
+		if (product.stock < newCount) {
+			setCount(product.stock);
+		} else {
+			setCount(newCount);
+		}
 		setProduct(product);
-		const productIndex = products.findIndex(
-			(item) => item.product._id === product._id,
-		);
-		dispatch({
-			type: "UPDATE_ITEM",
-			payload: { product, count: newCount },
-			index: productIndex,
-		});
 	};
 
 	const handleClickIncrement = ({ product, count }: CartType) => {
 		const newCount = count + 1;
-		setCount(newCount);
+		if (product.stock < newCount) {
+			setCount(product.stock);
+		} else {
+			setCount(newCount);
+		}
 		setProduct(product);
-		const productIndex = products.findIndex(
-			(item) => item.product._id === product._id,
-		);
-		dispatch({
-			type: "UPDATE_ITEM",
-			payload: { product, count: newCount },
-			index: productIndex,
-		});
 	};
 
 	const handleClickDecrement = ({ product, count }: CartType) => {
 		const newCount = Math.max(1, count - 1);
-		setCount(newCount);
+		if (product.stock < newCount) {
+			setCount(product.stock);
+		} else {
+			setCount(newCount);
+		}
 		setProduct(product);
-		const productIndex = products.findIndex(
-			(item) => item.product._id === product._id,
-		);
-		dispatch({
-			type: "UPDATE_ITEM",
-			payload: { product, count: newCount },
-			index: productIndex,
-		});
 	};
 
 	const handleClickRemove = ({ product, count }: CartType) => {
+		dispatch({ type: "REMOVE_ITEM", payload: { product, count } });
 		removeItem({ product, count });
 	};
 
+	// DEBOUNCES DATABASE UPDATE
 	useEffect(() => {
 		if (!product) return;
 		updateItem({ product, count: debouncedCount });
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedCount]);
+
+	// UPDATES UI IMMEDIATELY
+	useEffect(() => {
+		if (!product) return;
+		const productIndex = products.findIndex(
+			(item) => item.product._id === product._id,
+		);
+		dispatch({
+			type: "UPDATE_ITEM",
+			payload: { product, count },
+			index: productIndex,
+		});
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [count]);
 
 	return (
 		<Table className={className} {...props}>
@@ -119,7 +114,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 							<TableRow key={item.product._id}>
 								<TableCell>
 									<Button
-										variant="ghost"
+										variant="outline"
 										size="icon"
 										className="group hover:bg-secondary-cute-crab size-6 cursor-pointer rounded-full p-1"
 										onClick={() => {
@@ -156,12 +151,12 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 										<Input
 											min={1}
 											value={item.count === 0 ? "" : item.count}
-											onChange={(e) =>
-												handleInputChange(item.product, e.target.value)
-											}
-											onBlur={(e) =>
-												handleInputBlur(item.product, e.target.value)
-											}
+											onChange={(e) => {
+												handleInputChange(item.product, e.target.value);
+											}}
+											onBlur={(e) => {
+												handleInputBlur(item.product, e.target.value);
+											}}
 											className="bg-primary-white z-10 w-full rounded-none"
 										/>
 										<Button
@@ -176,14 +171,14 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 										</Button>
 									</div>
 								</TableCell>
-								<TableCell className="text-center">
-									<span>
+								<TableCell className="min-w-28 text-center">
+									<p>
 										$
 										{roundNumberByDecimalPlace(
 											item.count * item.product.price,
 											2,
 										)}
-									</span>
+									</p>
 								</TableCell>
 							</TableRow>
 						);

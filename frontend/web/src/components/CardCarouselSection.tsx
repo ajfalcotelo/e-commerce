@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { usePrevNextButtons } from "@/hooks/usePrevNextButtons";
@@ -9,6 +9,7 @@ import {
 	PrevButton,
 } from "@/components/ui/CarouselPrevNextButtons";
 import { CardCarousel } from "@/components/CardCarousel";
+import { Skeleton } from "@/components/ui/shadcn/skeleton";
 
 type viewAllButtonType =
 	| {
@@ -43,6 +44,7 @@ export const CardCarouselSection = <T,>({
 	rows,
 }: CardCarouselSectionProps<T>) => {
 	const [emblaRef, emblaApi] = useEmblaCarousel({ align: "start", ...options });
+	const [isRendering, setIsRendering] = useState(true);
 
 	const {
 		prevBtnDisabled,
@@ -50,6 +52,10 @@ export const CardCarouselSection = <T,>({
 		onPrevButtonClick,
 		onNextButtonClick,
 	} = usePrevNextButtons(emblaApi);
+
+	useEffect(() => {
+		requestAnimationFrame(() => setIsRendering(false));
+	});
 
 	return (
 		<section className={cn("flex flex-col py-16 first:mt-16", className)}>
@@ -66,12 +72,29 @@ export const CardCarouselSection = <T,>({
 					<NextButton onClick={onNextButtonClick} disabled={nextBtnDisabled} />
 				</div>
 			</div>
-			<CardCarousel
-				dataSet={dataSet}
-				emblaRef={emblaRef}
-				renderData={renderData}
-				rows={rows}
-			/>
+			<div className="relative w-full">
+				{isRendering ? (
+					<div className="grid grid-cols-4 place-items-center gap-2">
+						{[...Array(4)].map((_, i) => (
+							<div key={i} className="flex flex-col space-y-3">
+								<Skeleton className="h-60 w-[270px] rounded-xl" />
+								<div className="space-y-2">
+									<Skeleton className="h-6 w-[250px]" />
+									<Skeleton className="h-6 w-[100px]" />
+									<Skeleton className="h-6 w-[150px]" />
+								</div>
+							</div>
+						))}
+					</div>
+				) : (
+					<CardCarousel
+						dataSet={dataSet}
+						renderData={renderData}
+						emblaRef={emblaRef}
+						rows={rows}
+					/>
+				)}
+			</div>
 			{viewAllBtn && (
 				<Button className="mx-auto mt-16 flex h-14 w-60 items-center justify-center capitalize">
 					View All {viewAllCategory}

@@ -11,11 +11,11 @@ import { CartProvider } from "@/context/CartProvider";
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<AuthProvider>
-			<CartProvider>
-				<ProductProvider>
+			<ProductProvider>
+				<CartProvider>
 					<App />
-				</ProductProvider>
-			</CartProvider>
+				</CartProvider>
+			</ProductProvider>
 		</AuthProvider>
 	</StrictMode>,
 );

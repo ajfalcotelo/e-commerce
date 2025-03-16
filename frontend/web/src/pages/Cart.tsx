@@ -34,7 +34,7 @@ export const Cart = () => {
 				<ScrollArea className="h-[440px] border border-black/30">
 					<CartTable />
 				</ScrollArea>
-				<Checkout subtotal={subtotal} className="" />
+				<Checkout subtotal={subtotal} />
 			</div>
 		</div>
 	);

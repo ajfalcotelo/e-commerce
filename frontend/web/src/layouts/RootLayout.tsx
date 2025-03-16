@@ -4,6 +4,7 @@ import { Outlet } from "react-router";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Banner } from "@/components/Banner";
+import { Toaster } from "@/components/ui/shadcn/sonner";
 
 export const RootLayout = () => {
 	return (
@@ -13,6 +14,7 @@ export const RootLayout = () => {
 				<Header />
 				<main className="w-full">
 					<Outlet />
+					<Toaster expand={true} />
 				</main>
 			</div>
 			<Footer className="absolute bottom-0" />

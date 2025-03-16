@@ -7,7 +7,7 @@ import { useProductContext } from "@/hooks/useProductContext";
 
 export const Shop = () => {
 	const { products } = useProductContext();
-	const discountedProducts = products.filter((product) => product.discount);
+	const discountedProducts = products.filter((product) => product.discountRate);
 
 	return (
 		<div className="mx-[16vw]">

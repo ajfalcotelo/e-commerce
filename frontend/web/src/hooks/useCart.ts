@@ -5,166 +5,168 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCartContext } from "@/hooks/useCartContext";
 import { useState } from "react";
 
+type AuthorizedRequestType =
+	| {
+			method: "get" | "delete";
+			body?: never;
+	  }
+	| {
+			method: "patch" | "post";
+			body: object;
+	  };
+
 export const useCart = () => {
 	const { products, dispatch } = useCartContext();
 	const { user } = useAuthContext();
 	const [error, setError] = useState<string | null>(null);
 
+	const authorizedRequest = async ({ method, body }: AuthorizedRequestType) => {
+		if (!user) return;
+		switch (method) {
+			case "get":
+			case "delete": {
+				try {
+					const response = await cart[method]("/", {
+						headers: {
+							Authorization: `Bearer ${user.token}`,
+						},
+					});
+					return response.data;
+				} catch (error) {
+					console.error(error);
+					setError((error as { error: string }).error);
+					return;
+				}
+			}
+			case "post":
+			case "patch": {
+				try {
+					const response = await cart[method]("/", body, {
+						headers: {
+							Authorization: `Bearer ${user.token}`,
+						},
+					});
+					return response.data;
+				} catch (error) {
+					console.error(error);
+					setError((error as { error: string }).error);
+					return;
+				}
+			}
+			default:
+				throw new Error("Invalid request method");
+		}
+	};
+
+	const getCart = async () => {
+		const userCartData = await authorizedRequest({ method: "get" });
+		if (!userCartData) return;
+		dispatch({ type: "SET", payload: userCartData });
+	};
+
 	const createCart = async (
 		initialProduct: ProductType,
 		initialProductCount: number,
 	) => {
-		if (!user) return;
-		const userCart = await cart.get("/", {
-			headers: {
-				Authorization: `Bearer ${user.token}`,
+		const userCartData = await authorizedRequest({ method: "get" });
+		if (userCartData) console.log("Cart Data Already Exists");
+		dispatch({
+			type: "SET",
+			payload: [{ product: initialProduct, count: initialProductCount }],
+		});
+		await authorizedRequest({
+			method: "post",
+			body: {
+				products: [{ product: initialProduct, count: initialProductCount }],
 			},
 		});
-
-		if (!userCart.data) {
-			dispatch({
-				type: "SET",
-				payload: [{ product: initialProduct, count: initialProductCount }],
-			});
-			await cart.post(
-				"/",
-				{ products: [{ product: initialProduct, count: initialProductCount }] },
-				{
-					headers: {
-						Authorization: `Bearer ${user.token}`,
-					},
-				},
-			);
-			console.log("Cart Data Created");
-		}
+		console.log("cart created");
 	};
 
-	const removeItem = async ({ product, count }: CartType) => {
-		if (!user) return;
-		const userCart = await cart.get("/", {
-			headers: {
-				Authorization: `Bearer ${user.token}`,
-			},
-		});
+	const removeItem = async ({ product }: CartType) => {
+		const userCartData = await authorizedRequest({ method: "get" });
 
-		if (!userCart.data) return;
+		if (!userCartData) return;
 
 		const newProducts = [...products].filter(
 			(item) => item.product._id != product._id,
 		);
 
-		dispatch({ type: "REMOVE_ITEM", payload: { product, count } });
-		await cart.patch(
-			"/",
-			{ products: newProducts },
-			{
-				headers: {
-					Authorization: `Bearer ${user.token}`,
-				},
-			},
-		);
+		await authorizedRequest({
+			method: "patch",
+			body: { products: newProducts },
+		});
+		console.log("item removed");
 	};
 
 	const addItem = async ({ product, count }: CartType) => {
-		if (!user) return;
-		const userCart = await cart.get("/", {
-			headers: {
-				Authorization: `Bearer ${user.token}`,
-			},
-		});
-
-		if (!userCart.data) {
+		const userCartData = await authorizedRequest({ method: "get" });
+		if (!userCartData) {
 			console.log("user does not have cart, will now create");
 			createCart(product, count);
 		}
 
+		if (product.stock < count) {
+			console.log("Cannot add more, no more stock");
+			return;
+		}
+
 		// if product already exists, will only add count
 		// if product does not exist, will add to cart
-		if (products.some((e: CartType) => e.product._id === product._id)) {
+		if (products.some((item: CartType) => item.product._id === product._id)) {
 			console.log("product already exists, will only add count");
-			const newProducts = [...products].map((item) => {
-				if (item.product._id === product._id) {
-					const newCount = item.count + 1;
-					return { product, count: newCount };
-				} else {
-					return item;
-				}
-			});
 
-			dispatch({ type: "SET", payload: [...newProducts] });
-			await cart.patch(
-				"/",
-				{ products: [...newProducts] },
-				{
-					headers: {
-						Authorization: `Bearer ${user.token}`,
-					},
-				},
+			const productIndex = products.findIndex(
+				(item) => item.product._id === product._id,
 			);
+			dispatch({
+				type: "UPDATE_ITEM",
+				payload: { product, count: products[productIndex].count + 1 },
+				index: productIndex,
+			});
+			await updateItem({ product, count: products[productIndex].count + 1 });
 		} else {
 			console.log("product does not exist, will add to cart");
 			dispatch({ type: "ADD", payload: { product, count } });
-			await cart.patch(
-				"/",
-				{ products: [...products, { product, count }] },
-				{
-					headers: {
-						Authorization: `Bearer ${user.token}`,
-					},
-				},
-			);
+			await authorizedRequest({
+				method: "patch",
+				body: { products: [...products, { product, count }] },
+			});
+			console.log("item added");
 		}
 	};
 
 	const deleteCart = async () => {
-		if (!user) return;
-		console.log("Cart Data Deleted");
+		const responseData = await authorizedRequest({ method: "delete" });
+		if (!responseData) return;
 		dispatch({ type: "DELETE" });
-		const response = await cart.delete("/", {
-			headers: {
-				Authorization: `Bearer ${user.token}`,
-			},
-		});
-		console.log(response.data);
+		console.log("cart deleted");
 	};
 
 	const updateItem = async ({ product, count }: CartType) => {
-		if (!user) return;
-		const userCart = await cart.get("/", {
-			headers: {
-				Authorization: `Bearer ${user.token}`,
+		const userCartData = await authorizedRequest({ method: "get" });
+		if (!userCartData) return;
+
+		const productIndex = products.findIndex(
+			(item) => item.product._id === product._id,
+		);
+
+		await authorizedRequest({
+			method: "patch",
+			body: {
+				products: [
+					...products.slice(0, productIndex),
+					{ product, count },
+					...products.slice(productIndex + 1),
+				],
 			},
 		});
 
-		if (userCart.data) {
-			if (products.some((item) => item.product._id === product._id)) {
-				const newProducts = [...products].map((item) => {
-					if (item.product._id === product._id) {
-						return { product, count };
-					} else {
-						return item;
-					}
-				});
-
-				dispatch({ type: "SET", payload: [...newProducts] });
-
-				await cart.patch(
-					"/",
-					{ products: [...newProducts] },
-					{
-						headers: {
-							Authorization: `Bearer ${user.token}`,
-						},
-					},
-				);
-			} else {
-				setError("Item does not exist on cart");
-				console.log("Item must be included in cart to update");
-			}
-		}
+		console.log("item updated");
 	};
 
 	return {
+		getCart,
 		createCart,
 		removeItem,
 		addItem,
