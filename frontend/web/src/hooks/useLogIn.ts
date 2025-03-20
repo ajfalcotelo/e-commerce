@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { AuthError, auth } from "@/api/auth";
+import { AuthError, authApi } from "@/api/auth";
 
 type LogIn = {
 	email: string;
@@ -17,7 +17,7 @@ export const useLogIn = ({ email, password }: LogIn) => {
 		setError(null);
 
 		try {
-			const response = await auth.post("/login", { email, password });
+			const response = await authApi.post("/login", { email, password });
 			const { token, user } = response.data;
 
 			setIsLoading(false);

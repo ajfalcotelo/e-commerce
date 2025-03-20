@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { AuthContext, AuthState } from "@/context/AuthContext";
 
-type AuthUser = {
+export type AuthUser = {
 	createdAt: string;
 	email: string;
 	name: string;

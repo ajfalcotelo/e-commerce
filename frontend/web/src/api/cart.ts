@@ -4,14 +4,14 @@ export type CartError = {
 	error: string;
 };
 
-export const cart = axios.create({
+export const cartApi = axios.create({
 	baseURL: "http://localhost:8000/api/cart",
 	headers: {
 		"Content-Type": "application/json",
 	},
 });
 
-cart.interceptors.response.use(
+cartApi.interceptors.response.use(
 	(response) => response, // Pass successful responses unchanged
 	(error: AxiosError<CartError>) => {
 		if (error.response) {

@@ -1,4 +1,4 @@
-import { cart } from "@/api/cart";
+import { cartApi } from "@/api/cart";
 import { CartContext, CartState, CartType } from "@/context/CartContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useEffect, useReducer } from "react";
@@ -63,7 +63,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 	useEffect(() => {
 		const fetchCart = async () => {
 			if (!user) return;
-			const response = await cart.get("/", {
+			const response = await cartApi.get("/", {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},

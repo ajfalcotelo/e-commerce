@@ -1,11 +1,11 @@
-import { cart } from "@/api/cart";
+import { cartApi } from "@/api/cart";
 import { CartType } from "@/context/CartContext";
 import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCartContext } from "@/hooks/useCartContext";
 import { useState } from "react";
 
-type AuthorizedRequestType =
+type CartAuthRequestType =
 	| {
 			method: "get" | "delete";
 			body?: never;
@@ -20,13 +20,13 @@ export const useCart = () => {
 	const { user } = useAuthContext();
 	const [error, setError] = useState<string | null>(null);
 
-	const authorizedRequest = async ({ method, body }: AuthorizedRequestType) => {
+	const authorizedRequest = async ({ method, body }: CartAuthRequestType) => {
 		if (!user) return;
 		switch (method) {
 			case "get":
 			case "delete": {
 				try {
-					const response = await cart[method]("/", {
+					const response = await cartApi[method]("/", {
 						headers: {
 							Authorization: `Bearer ${user.token}`,
 						},
@@ -41,7 +41,7 @@ export const useCart = () => {
 			case "post":
 			case "patch": {
 				try {
-					const response = await cart[method]("/", body, {
+					const response = await cartApi[method]("/", body, {
 						headers: {
 							Authorization: `Bearer ${user.token}`,
 						},
