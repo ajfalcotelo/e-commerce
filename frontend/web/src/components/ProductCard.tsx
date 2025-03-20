@@ -2,17 +2,30 @@ import { StarRating } from "@/components/ui/StarRating";
 import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCart } from "@/hooks/useCart";
+import { cn } from "@/lib/utils";
 import { ROUTES } from "@/utils/constant";
 import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
-import { FaRegEye, FaRegHeart } from "react-icons/fa6";
+import { ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
+export const PRODUCT_CARD_WIDTH = 270;
+
 type ProductCardProps = {
 	product: ProductType;
+	showRatings?: boolean;
+	actionButtons?: React.ReactElement;
+	alwaysShowCartButton?: boolean;
+	hoverHighlight?: boolean;
 };
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({
+	product,
+	showRatings = true,
+	actionButtons,
+	alwaysShowCartButton = false,
+	hoverHighlight = true,
+}: ProductCardProps) => {
 	const { title, image, rating, discountRate: discount } = product;
 	const { user } = useAuthContext();
 	const { addItem } = useCart();
@@ -26,7 +39,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 		price = roundNumberByDecimalPlace(discountedPrice, 2);
 	}
 
-	const handleAddToCartClick = async () => {
+	const handleAddToCartClick = () => {
 		if (user) {
 			addItem({ product, count: 1 });
 			toast.success("Item has been added to cart", {
@@ -43,8 +56,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
 	return (
 		<div
-			className="group w-[270px] flex-shrink-0 border border-black/30
-				hover:shadow-[0px_0px_7px_0px] hover:shadow-black/30"
+			className={cn("group flex-shrink-0 border border-black/30", {
+				"hover:-translate-y-0.5 hover:shadow-[0px_0px_7px_0px] hover:shadow-black/30":
+					hoverHighlight,
+			})}
+			style={{ width: `${PRODUCT_CARD_WIDTH}px` }}
 		>
 			<div
 				className="bg-primary-white relative flex h-60 w-full items-center justify-center rounded
@@ -64,25 +80,22 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 					</div>
 				)}
 				<div className="absolute top-3 right-3 flex flex-col gap-3">
-					<button
-						className="bg-secondary-white-smoke flex size-8 cursor-pointer appearance-none items-center
-							justify-center rounded-full"
-					>
-						<FaRegHeart />
-					</button>
-					<button
-						className="bg-secondary-white-smoke flex size-8 cursor-pointer appearance-none items-center
-							justify-center rounded-full"
-					>
-						<FaRegEye />
-					</button>
+					{actionButtons}
 				</div>
 				<button
-					className="text-primary-white absolute bottom-0 h-0 w-full cursor-pointer appearance-none
-						overflow-hidden bg-black font-medium transition-all select-none group-hover:h-10"
+					className={cn(
+						`text-primary-white border-battle-grey absolute bottom-0 box-content flex w-full
+						cursor-pointer appearance-none flex-row items-center justify-center gap-2
+						overflow-hidden border-x bg-black transition-all select-none`,
+						{
+							"h-0 group-hover:h-10": !alwaysShowCartButton,
+							"h-10": alwaysShowCartButton,
+						},
+					)}
 					onClick={handleAddToCartClick}
 				>
-					Add to cart
+					<ShoppingCart />
+					<p className="text-sm">Add to cart</p>
 				</button>
 			</div>
 			<div className="bg-secondary-white-smoke w-full space-y-2 p-2">
@@ -93,12 +106,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 						<span className="text-battle-grey line-through">${oldPrice}</span>
 					)}
 				</div>
-				<div className="flex flex-row items-center gap-2 select-none">
-					<StarRating rate={rating.rate} className="size-5" />
-					<span className="text-battle-grey text-sm font-semibold">
-						({rating.count})
-					</span>
-				</div>
+				{showRatings && (
+					<div className="flex flex-row items-center gap-2 select-none">
+						<StarRating rate={rating.rate} className="size-5" />
+						<span className="text-battle-grey text-sm font-semibold">
+							({rating.count})
+						</span>
+					</div>
+				)}
 			</div>
 		</div>
 	);

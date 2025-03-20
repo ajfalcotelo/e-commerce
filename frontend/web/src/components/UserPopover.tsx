@@ -4,24 +4,42 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/shadcn/popover";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { useLogOut } from "@/hooks/useLogOut";
 import { cn } from "@/lib/utils";
+import { ROUTES } from "@/utils/constant";
+import { CircleUser, LogIn, LogOut, UserRoundPlus } from "lucide-react";
 import { useState } from "react";
-import { LuCircleUser, LuLogOut } from "react-icons/lu";
+import { useNavigate } from "react-router";
 
 export const UserPopover = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const { user } = useAuthContext();
 	const { logout } = useLogOut();
+	const navigate = useNavigate();
 
 	const handleLogOut = () => {
+		setIsOpen(false);
 		logout();
 		console.log("Logged Out");
+	};
+
+	const handleLogIn = () => {
+		setIsOpen(false);
+		navigate(ROUTES.AUTH.LOGIN);
+		window.scrollTo(0, 0);
+	};
+
+	const handleSignUp = () => {
+		setIsOpen(false);
+		navigate(ROUTES.AUTH.SIGNUP);
+		window.scrollTo(0, 0);
 	};
 
 	return (
 		<Popover open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger className="flex size-8 cursor-pointer items-center justify-center">
-				<LuCircleUser
+				<CircleUser
 					className={cn(
 						"size-full stroke-[1.75]",
 						isOpen && "text-secondary-cute-crab",
@@ -29,14 +47,35 @@ export const UserPopover = () => {
 				/>
 			</PopoverTrigger>
 			<PopoverContent align="end" className="px-5 py-2.5">
-				<Button
-					variant={"ghost"}
-					className="w-full cursor-pointer justify-normal"
-					onClick={handleLogOut}
-				>
-					<LuLogOut className="size-5" />
-					<p>Logout</p>
-				</Button>
+				{user ? (
+					<Button
+						variant={"ghost"}
+						className="w-full cursor-pointer justify-normal"
+						onClick={handleLogOut}
+					>
+						<LogOut className="size-5" />
+						<p>Logout</p>
+					</Button>
+				) : (
+					<>
+						<Button
+							variant={"ghost"}
+							className="w-full cursor-pointer justify-normal"
+							onClick={handleLogIn}
+						>
+							<LogIn className="size-5" />
+							<p>Log In</p>
+						</Button>
+						<Button
+							variant={"ghost"}
+							className="w-full cursor-pointer justify-normal"
+							onClick={handleSignUp}
+						>
+							<UserRoundPlus className="size-5" />
+							<p>Sign Up</p>
+						</Button>
+					</>
+				)}
 			</PopoverContent>
 		</Popover>
 	);

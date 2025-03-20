@@ -13,6 +13,7 @@ import { Cart } from "@/pages/Cart";
 // Layouts
 import { RootLayout } from "@/layouts/RootLayout";
 import { AuthLayout } from "@/layouts/AuthLayout";
+import { Wishlist } from "@/pages/Wishlist";
 
 const router = createBrowserRouter([
 	{
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
 			{
 				path: ROUTES.HOME.CART,
 				element: <Cart />,
+			},
+			{
+				path: ROUTES.HOME.WISHLIST,
+				element: <Wishlist />,
 			},
 			{
 				path: "*",

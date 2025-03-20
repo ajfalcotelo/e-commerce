@@ -4,6 +4,21 @@ import { ShopSection } from "@/components/ShopSection";
 import { CardCarouselSection } from "@/components/CardCarouselSection";
 import { ProductCard } from "@/components/ProductCard";
 import { useProductContext } from "@/hooks/useProductContext";
+import { FaRegEye } from "react-icons/fa6";
+import { WishlistCardAction } from "@/components/WishlistCardAction";
+import { ProductType } from "@/context/ProductContext";
+
+const CarouselCardAction = (product: ProductType) => (
+	<>
+		<WishlistCardAction product={product} />
+		<button
+			className="bg-secondary-white-smoke flex size-8 cursor-pointer appearance-none items-center
+				justify-center rounded-full"
+		>
+			<FaRegEye />
+		</button>
+	</>
+);
 
 export const Shop = () => {
 	const { products } = useProductContext();
@@ -17,7 +32,7 @@ export const Shop = () => {
 			</div>
 
 			{/* ShopSections with colored line between gap */}
-			<div className="divide-y divide-black/30">
+			<div className="mt-16 divide-y divide-black/30">
 				<CardCarouselSection
 					title="Discounted Sales"
 					tag="Today's"
@@ -26,9 +41,15 @@ export const Shop = () => {
 					options={{ watchDrag: false }}
 					dataSet={discountedProducts}
 					rows={1}
-					renderData={(item) => <ProductCard product={item} key={item._id} />}
+					renderData={(data) => (
+						<ProductCard
+							product={data}
+							key={data._id}
+							actionButtons={CarouselCardAction(data)}
+						/>
+					)}
 				/>
-				<ShopSection title="Section Testing 2" tag="Tomorrow's" navMode="all">
+				<ShopSection title="Section Testing 2" tag="Tomorrow's">
 					Test
 				</ShopSection>
 				<CardCarouselSection
@@ -38,7 +59,13 @@ export const Shop = () => {
 					viewAllCategory="Products"
 					dataSet={products}
 					rows={2}
-					renderData={(data) => <ProductCard product={data} key={data._id} />}
+					renderData={(data) => (
+						<ProductCard
+							product={data}
+							key={data._id}
+							actionButtons={CarouselCardAction(data)}
+						/>
+					)}
 				/>
 			</div>
 		</div>

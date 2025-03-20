@@ -22,6 +22,7 @@ export const ROUTES = {
 		BEAUTY: "/beauty",
 		JEWELRY: "/jewelry",
 		CART: "/cart",
+		WISHLIST: "/wishlist",
 	},
 	CONTACT: "/contact",
 	AUTH: {

@@ -1,3 +1,4 @@
+import { PRODUCT_CARD_WIDTH } from "@/components/ProductCard";
 import {
 	ForwardedRef,
 	useCallback,
@@ -33,7 +34,10 @@ export const CardCarousel = <T,>({
 		const containerWidth = containerRef.current.clientWidth;
 
 		if (!containerWidth) return;
-		const itemsThatFit = Math.max(1, Math.floor(containerWidth / 278));
+		const itemsThatFit = Math.max(
+			1,
+			Math.floor(containerWidth / PRODUCT_CARD_WIDTH),
+		);
 		setDataPerRow(itemsThatFit);
 	}, []);
 
@@ -60,7 +64,7 @@ export const CardCarousel = <T,>({
 
 	return (
 		<div
-			className="w-full overflow-hidden"
+			className="w-full overflow-hidden p-0.5"
 			ref={(el) => {
 				combinedRef(el);
 			}}
