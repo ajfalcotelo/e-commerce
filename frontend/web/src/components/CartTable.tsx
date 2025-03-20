@@ -13,14 +13,25 @@ import { useCartContext } from "@/hooks/useCartContext";
 import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/shadcn/button";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { CartType } from "@/context/CartContext";
-import { LuX } from "react-icons/lu";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/shadcn/alert-dialog";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import { Button } from "@/components/ui/shadcn/button";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 export const CartTable = ({ className, ...props }: { className?: string }) => {
 	const { products, dispatch } = useCartContext();
-	const { updateItem, removeItem } = useCart();
+	const { updateItem, removeItem, deleteCart } = useCart();
 	const [count, setCount] = useState(1);
 	const [product, setProduct] = useState<ProductType>();
 	const debouncedCount = useDebounce(count, 800);
@@ -73,6 +84,11 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 		removeItem({ product, count });
 	};
 
+	const handleClickRemoveAll = () => {
+		dispatch({ type: "DELETE" });
+		deleteCart();
+	};
+
 	// DEBOUNCES DATABASE UPDATE
 	useEffect(() => {
 		if (!product) return;
@@ -100,7 +116,46 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 		<Table className={className} {...props}>
 			<TableHeader className="bg-secondary sticky top-0 z-20 select-none">
 				<TableRow>
-					<TableHead className="w-10"></TableHead>
+					<TableHead>
+						{products.length > 0 && (
+							<AlertDialog>
+								<AlertDialogTrigger asChild>
+									<Button
+										size="icon"
+										className="group hover:bg-destructive bg-secondary-cute-crab size-6 cursor-pointer
+											rounded-full p-1"
+									>
+										<FaRegTrashCan className="group-hover:text-primary-white size-full transition-all" />
+									</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>
+											Do you wish to remove all items in your cart?
+										</AlertDialogTitle>
+										<AlertDialogDescription>
+											This will remove all items in your cart. Do you wish to
+											proceed?
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel className="cursor-pointer">
+											No, keep them
+										</AlertDialogCancel>
+										<AlertDialogAction asChild>
+											<Button
+												variant="destructive"
+												className="text-primary-white hover:bg-destructive bg-secondary-cute-crab cursor-pointer"
+												onClick={handleClickRemoveAll}
+											>
+												Yes, remove them
+											</Button>
+										</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						)}
+					</TableHead>
 					<TableHead className="w-3/6">Product</TableHead>
 					<TableHead className="w-1/6 text-center">Price</TableHead>
 					<TableHead className="w-1/6 text-center">Quantity</TableHead>
@@ -121,7 +176,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 											handleClickRemove(item);
 										}}
 									>
-										<LuX className="group-hover:text-primary-white size-full transition-all" />
+										<X className="group-hover:text-primary-white size-full transition-all" />
 									</Button>
 								</TableCell>
 								<TableCell className="flex flex-row items-center gap-5">
@@ -146,7 +201,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 											size="icon"
 											className="rounded-r-none border-r-0"
 										>
-											<FaChevronLeft />
+											<ChevronLeft />
 										</Button>
 										<Input
 											min={1}
@@ -167,7 +222,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 											size="icon"
 											className="rounded-l-none border-l-0"
 										>
-											<FaChevronRight />
+											<ChevronRight />
 										</Button>
 									</div>
 								</TableCell>

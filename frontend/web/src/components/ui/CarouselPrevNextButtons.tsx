@@ -1,5 +1,5 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ComponentPropsWithRef } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 
 type CarouselButtonProps = ComponentPropsWithRef<"button">;
 
@@ -22,7 +22,7 @@ const CarouselButton = (props: CarouselButtonProps) => {
 export const PrevButton: React.FC<CarouselButtonProps> = (props) => {
 	return (
 		<CarouselButton {...props}>
-			<FaArrowLeft className="size-5 group-disabled:text-[rgb(192,192,192)]" />
+			<ArrowLeft className="size-5 group-disabled:text-[rgb(192,192,192)]" />
 		</CarouselButton>
 	);
 };
@@ -30,7 +30,7 @@ export const PrevButton: React.FC<CarouselButtonProps> = (props) => {
 export const NextButton: React.FC<CarouselButtonProps> = (props) => {
 	return (
 		<CarouselButton {...props}>
-			<FaArrowRight className="size-5 group-disabled:text-[rgb(192,192,192)]" />
+			<ArrowRight className="size-5 group-disabled:text-[rgb(192,192,192)]" />
 		</CarouselButton>
 	);
 };
