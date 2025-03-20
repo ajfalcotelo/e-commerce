@@ -7,14 +7,17 @@ import "./index.css";
 import { AuthProvider } from "@/context/AuthProvider";
 import { ProductProvider } from "@/context/ProductProvider";
 import { CartProvider } from "@/context/CartProvider";
+import { WishlistProvider } from "@/context/WishlistProvider";
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		<AuthProvider>
 			<ProductProvider>
-				<CartProvider>
-					<App />
-				</CartProvider>
+				<WishlistProvider>
+					<CartProvider>
+						<App />
+					</CartProvider>
+				</WishlistProvider>
 			</ProductProvider>
 		</AuthProvider>
 	</StrictMode>,
