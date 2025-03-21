@@ -3,10 +3,8 @@ import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCart } from "@/hooks/useCart";
 import { cn } from "@/lib/utils";
-import { ROUTES } from "@/utils/constant";
 import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
 import { ShoppingCart } from "lucide-react";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export const PRODUCT_CARD_WIDTH = 270;
@@ -29,7 +27,6 @@ export const ProductCard = ({
 	const { title, image, rating, discountRate: discount } = product;
 	const { user } = useAuthContext();
 	const { addItem } = useCart();
-	const navigate = useNavigate();
 	let { price } = product;
 
 	const oldPrice = discount ? price : null;
@@ -48,9 +45,6 @@ export const ProductCard = ({
 					toast: "!select-none !border !border-black/30",
 				},
 			});
-		} else {
-			navigate(ROUTES.AUTH.LOGIN);
-			window.scrollTo(0, 0);
 		}
 	};
 

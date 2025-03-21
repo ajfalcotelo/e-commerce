@@ -26,13 +26,13 @@ export const UserPopover = () => {
 
 	const handleLogIn = () => {
 		setIsOpen(false);
-		navigate(ROUTES.AUTH.LOGIN);
+		navigate(ROUTES.AUTH.LOGIN, { replace: true });
 		window.scrollTo(0, 0);
 	};
 
 	const handleSignUp = () => {
 		setIsOpen(false);
-		navigate(ROUTES.AUTH.SIGNUP);
+		navigate(ROUTES.AUTH.SIGNUP, { replace: true });
 		window.scrollTo(0, 0);
 	};
 

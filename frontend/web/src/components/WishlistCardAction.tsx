@@ -3,25 +3,18 @@ import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useWishlistContext } from "@/hooks/useWishlistContext";
-import { ROUTES } from "@/utils/constant";
 import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaRegTrashCan } from "react-icons/fa6";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export const WishlistCardAction = ({ product }: { product: ProductType }) => {
 	const { wishlist } = useWishlistContext();
 	const { addItem, removeItem } = useWishlist();
 	const { user } = useAuthContext();
-	const navigate = useNavigate();
 	const [toggleWishlist, setToggleWishlist] = useState(false);
 
 	const handleOnClick = () => {
-		if (!user) {
-			navigate(ROUTES.AUTH.LOGIN);
-			window.scrollTo(0, 0);
-			return;
-		}
+		if (!user) return;
 
 		if (toggleWishlist) {
 			setToggleWishlist(false);

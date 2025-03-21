@@ -13,30 +13,18 @@ import {
 	AlertDialogCancel,
 } from "@/components/ui/shadcn/alert-dialog";
 import { Button } from "@/components/ui/shadcn/button";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCart } from "@/hooks/useCart";
 import { useCartContext } from "@/hooks/useCartContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useWishlistContext } from "@/hooks/useWishlistContext";
 import { ROUTES } from "@/utils/constant";
 import { AlertDialogAction } from "@radix-ui/react-alert-dialog";
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
 
 export const Wishlist = () => {
 	const { wishlist, dispatch: wishlistDispatch } = useWishlistContext();
 	const { products } = useCartContext();
 	const { addItem } = useCart();
 	const { deleteWishlist } = useWishlist();
-	const { user } = useAuthContext();
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (!user) {
-			navigate(ROUTES.AUTH.LOGIN);
-			window.scrollTo(0, 0);
-		}
-	});
 
 	const handleMoveAllToCart = () => {
 		wishlist.forEach((wishlist) => {

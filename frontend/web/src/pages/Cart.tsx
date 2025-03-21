@@ -2,17 +2,13 @@ import { CartTable } from "@/components/CartTable";
 import { Checkout } from "@/components/Checkout";
 import { ScrollArea } from "@/components/ui/shadcn/scroll-area";
 import { CartType } from "@/context/CartContext";
-import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCartContext } from "@/hooks/useCartContext";
 import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 
 export const Cart = () => {
-	const { user } = useAuthContext();
 	const { products } = useCartContext();
 	const [subtotal, setSubtotal] = useState<number>(0);
-	const navigate = useNavigate();
 
 	useEffect(() => {
 		const subtotalPrice = products.reduce(
@@ -21,12 +17,6 @@ export const Cart = () => {
 		);
 		setSubtotal(roundNumberByDecimalPlace(subtotalPrice, 2));
 	}, [products]);
-
-	useEffect(() => {
-		if (!user) {
-			navigate("/");
-		}
-	}, [user, navigate]);
 
 	return (
 		<div className="mx-[16vw] my-20">

@@ -14,6 +14,7 @@ import { Cart } from "@/pages/Cart";
 import { RootLayout } from "@/layouts/RootLayout";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Wishlist } from "@/pages/Wishlist";
+import { ProtectedRoutes } from "@/components/ProtectedRoutes";
 
 const router = createBrowserRouter([
 	{
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
 				],
 			},
 			{
-				element: <AuthLayout />,
+				element: (
+					<ProtectedRoutes invert>
+						<AuthLayout />
+					</ProtectedRoutes>
+				),
 				children: [
 					{
 						path: ROUTES.AUTH.LOGIN,
@@ -64,11 +69,19 @@ const router = createBrowserRouter([
 			},
 			{
 				path: ROUTES.HOME.CART,
-				element: <Cart />,
+				element: (
+					<ProtectedRoutes>
+						<Cart />
+					</ProtectedRoutes>
+				),
 			},
 			{
 				path: ROUTES.HOME.WISHLIST,
-				element: <Wishlist />,
+				element: (
+					<ProtectedRoutes>
+						<Wishlist />
+					</ProtectedRoutes>
+				),
 			},
 			{
 				path: "*",

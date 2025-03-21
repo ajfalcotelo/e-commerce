@@ -1,17 +1,6 @@
-import { Outlet, useNavigate } from "react-router";
-import { useEffect } from "react";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { Outlet } from "react-router";
 
 export const AuthLayout = () => {
-	const { user } = useAuthContext();
-	const navigate = useNavigate();
-
-	useEffect(() => {
-		if (user) {
-			navigate("/");
-		}
-	}, [user, navigate]);
-
 	return (
 		<div className="h-screen w-full">
 			<div className="mt-10 flex h-4/5 w-full">
