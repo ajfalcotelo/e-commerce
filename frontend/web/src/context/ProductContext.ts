@@ -19,7 +19,7 @@ export type ProductType = {
 
 type ProductContextType = {
 	products: ProductType[];
-	setProducts: React.Dispatch<React.SetStateAction<ProductType[]>>;
+	loaded: boolean;
 };
 
 export const ProductContext = createContext<ProductContextType | undefined>(

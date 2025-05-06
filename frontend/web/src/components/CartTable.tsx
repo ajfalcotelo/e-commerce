@@ -14,7 +14,7 @@ import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useEffect, useState } from "react";
 import { CartType } from "@/context/CartContext";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -201,7 +201,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 											size="icon"
 											className="rounded-r-none border-r-0"
 										>
-											<ChevronLeft />
+											<Minus />
 										</Button>
 										<Input
 											min={1}
@@ -222,7 +222,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 											size="icon"
 											className="rounded-l-none border-l-0"
 										>
-											<ChevronRight />
+											<Plus />
 										</Button>
 									</div>
 								</TableCell>

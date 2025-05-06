@@ -14,7 +14,10 @@ export const WishlistCardAction = ({ product }: { product: ProductType }) => {
 	const [toggleWishlist, setToggleWishlist] = useState(false);
 
 	const handleOnClick = () => {
-		if (!user) return;
+		if (!user) {
+			toast.error("You must be logged in to do this action");
+			return;
+		}
 
 		if (toggleWishlist) {
 			setToggleWishlist(false);
@@ -49,7 +52,7 @@ export const WishlistCardAction = ({ product }: { product: ProductType }) => {
 
 	return (
 		<CardActionButton onClick={handleOnClick}>
-			{toggleWishlist ? (
+			{user && toggleWishlist ? (
 				<FaHeart className="fill-candy-pink" />
 			) : (
 				<FaRegHeart />

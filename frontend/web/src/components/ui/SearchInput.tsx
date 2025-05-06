@@ -7,7 +7,7 @@ export const SearchInput = () => {
 				items-center rounded-md px-4 focus-within:outline"
 		>
 			<input
-				type="search"
+				type="text"
 				placeholder={NAV.SEARCH.NAME}
 				className="search-cancel:appearance-none w-64 bg-transparent p-2 text-sm
 					focus:outline-hidden"

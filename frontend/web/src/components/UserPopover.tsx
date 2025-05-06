@@ -39,12 +39,21 @@ export const UserPopover = () => {
 	return (
 		<Popover open={isOpen} onOpenChange={setIsOpen}>
 			<PopoverTrigger className="flex size-8 cursor-pointer items-center justify-center">
-				<CircleUser
-					className={cn(
-						"size-full stroke-[1.75]",
-						isOpen && "text-secondary-cute-crab",
-					)}
-				/>
+				{user ? (
+					<CircleUser
+						className={cn(
+							"size-full fill-black/30 stroke-[1.75]",
+							isOpen && "text-secondary-cute-crab",
+						)}
+					/>
+				) : (
+					<CircleUser
+						className={cn(
+							"size-full stroke-[1.75]",
+							isOpen && "text-secondary-cute-crab",
+						)}
+					/>
+				)}
 			</PopoverTrigger>
 			<PopoverContent align="end" className="px-5 py-2.5">
 				{user ? (

@@ -1,8 +1,10 @@
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { useWishlistContext } from "@/hooks/useWishlistContext";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/utils/constant";
 import { FaRegHeart } from "react-icons/fa6";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 export const WishlistButton = ({
 	className,
@@ -11,14 +13,24 @@ export const WishlistButton = ({
 	className?: string;
 }) => {
 	const { wishlist } = useWishlistContext();
+	const { user } = useAuthContext();
+
+	const handleOnClick = () => {
+		if (!user) {
+			toast.error("You must be logged in to visit this page");
+		}
+	};
+
+	const Comp = user ? Link : "button";
 
 	return (
-		<Link
+		<Comp
 			to={ROUTES.HOME.WISHLIST}
 			className={cn(
 				"relative flex size-8 cursor-pointer items-center justify-center",
 				className,
 			)}
+			onClick={handleOnClick}
 			{...props}
 		>
 			<FaRegHeart className="size-10/12" />
@@ -30,6 +42,6 @@ export const WishlistButton = ({
 					{wishlist.length > 9 ? "9+" : wishlist.length}
 				</div>
 			)}
-		</Link>
+		</Comp>
 	);
 };

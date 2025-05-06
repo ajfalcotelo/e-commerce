@@ -8,8 +8,7 @@ export const ProductProvider = ({
 	children: React.ReactNode;
 }) => {
 	const [products, setProducts] = useState<ProductType[]>([]);
-
-	console.log("ProductContext products: ", products);
+	const [loaded, setLoaded] = useState(false);
 
 	const productMemo = useMemo(() => ({ products, setProducts }), [products]);
 
@@ -40,6 +39,7 @@ export const ProductProvider = ({
 				) {
 					console.log("ProductContext load cache");
 					setProducts(cachedProductParsed);
+					setLoaded(true);
 					return;
 				}
 
@@ -49,6 +49,7 @@ export const ProductProvider = ({
 				localStorage.setItem("products", JSON.stringify(response.data));
 				localStorage.setItem("productsTimestamp", now.toString());
 				setProducts(response.data);
+				setLoaded(true);
 			} catch (error) {
 				console.error("Error fetching products:", error);
 			}
@@ -57,8 +58,10 @@ export const ProductProvider = ({
 		fetchProducts();
 	}, []);
 
+	console.log("ProductContext products: ", productMemo.products);
+
 	return (
-		<ProductContext.Provider value={productMemo}>
+		<ProductContext.Provider value={{ products: productMemo.products, loaded }}>
 			{children}
 		</ProductContext.Provider>
 	);

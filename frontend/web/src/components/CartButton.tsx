@@ -1,19 +1,31 @@
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCartContext } from "@/hooks/useCartContext";
 import { cn } from "@/lib/utils";
 import { ROUTES } from "@/utils/constant";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 export const CartButton = ({ className, ...props }: { className?: string }) => {
 	const { products } = useCartContext();
+	const { user } = useAuthContext();
+
+	const handleOnClick = () => {
+		if (!user) {
+			toast.error("You must be logged in to visit this page");
+		}
+	};
+
+	const Comp = user ? Link : "button";
 
 	return (
-		<Link
+		<Comp
 			to={ROUTES.HOME.CART}
 			className={cn(
 				"relative flex size-8 cursor-pointer items-center justify-center",
 				className,
 			)}
+			onClick={handleOnClick}
 			{...props}
 		>
 			<ShoppingCart className="size-10/12" />
@@ -25,6 +37,6 @@ export const CartButton = ({ className, ...props }: { className?: string }) => {
 					{products.length > 9 ? "9+" : products.length}
 				</div>
 			)}
-		</Link>
+		</Comp>
 	);
 };
