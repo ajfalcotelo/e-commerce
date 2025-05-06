@@ -1,22 +1,16 @@
 import { ImageCarousel } from "@/components/ImageCarousel";
 import { Categories } from "@/components/Categories";
-import { ShopSection } from "@/components/ShopSection";
 import { CardCarouselSection } from "@/components/CardCarouselSection";
 import { ProductCard } from "@/components/ProductCard";
 import { useProductContext } from "@/hooks/useProductContext";
-import { FaRegEye } from "react-icons/fa6";
 import { WishlistCardAction } from "@/components/WishlistCardAction";
 import { ProductType } from "@/context/ProductContext";
+import { QuickViewCardAction } from "@/components/QuickViewCardAction";
 
 const CarouselCardAction = (product: ProductType) => (
 	<>
 		<WishlistCardAction product={product} />
-		<button
-			className="bg-secondary-white-smoke flex size-8 cursor-pointer appearance-none items-center
-				justify-center rounded-full"
-		>
-			<FaRegEye />
-		</button>
+		<QuickViewCardAction product={product} />
 	</>
 );
 
@@ -49,9 +43,6 @@ export const Shop = () => {
 						/>
 					)}
 				/>
-				<ShopSection title="Section Testing 2" tag="Tomorrow's">
-					Test
-				</ShopSection>
 				<CardCarouselSection
 					title="Explore Our Products"
 					tag="Our Products"

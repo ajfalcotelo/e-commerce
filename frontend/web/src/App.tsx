@@ -15,6 +15,7 @@ import { RootLayout } from "@/layouts/RootLayout";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { Wishlist } from "@/pages/Wishlist";
 import { ProtectedRoutes } from "@/components/ProtectedRoutes";
+import { Quickview } from "@/pages/Quickview";
 
 const router = createBrowserRouter([
 	{
@@ -43,6 +44,18 @@ const router = createBrowserRouter([
 				],
 			},
 			{
+				path: ROUTES.PRODUCTS,
+				element: <Quickview />,
+			},
+			{
+				path: ROUTES.CONTACT,
+				element: <Contacts />,
+			},
+			{
+				path: ROUTES.ABOUT,
+				element: <About />,
+			},
+			{
 				element: (
 					<ProtectedRoutes invert>
 						<AuthLayout />
@@ -58,14 +71,6 @@ const router = createBrowserRouter([
 						element: <Signup />,
 					},
 				],
-			},
-			{
-				path: ROUTES.CONTACT,
-				element: <Contacts />,
-			},
-			{
-				path: ROUTES.ABOUT,
-				element: <About />,
 			},
 			{
 				path: ROUTES.HOME.CART,

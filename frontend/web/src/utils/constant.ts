@@ -23,7 +23,9 @@ export const ROUTES = {
 		JEWELRY: "/jewelry",
 		CART: "/cart",
 		WISHLIST: "/wishlist",
+		CHECKOUT: "/checkout",
 	},
+	PRODUCTS: "/products/:slugId",
 	CONTACT: "/contact",
 	AUTH: {
 		LOGIN: "/auth/login",
