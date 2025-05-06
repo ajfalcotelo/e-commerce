@@ -6,8 +6,8 @@ import { Contacts } from "@/pages/Contacts";
 import { About } from "@/pages/About";
 import { Shop } from "@/pages/Shop";
 import { NotFound } from "@/pages/NotFound";
-import { Login } from "@/pages/auth/Login";
-import { Signup } from "@/pages/auth/Signup";
+import { Login } from "@/pages/auth/LogIn";
+import { Signup } from "@/pages/auth/SignUp";
 import { Cart } from "@/pages/Cart";
 
 // Layouts
