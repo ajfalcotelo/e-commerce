@@ -1,4 +1,3 @@
-import { wishlistApi } from "@/api/wishlistApi";
 import { ProductType } from "@/context/ProductContext";
 import {
 	addedAtToDateISOString,
@@ -7,6 +6,7 @@ import {
 	WishlistType,
 } from "@/context/WishlistContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { api } from "@/services/api";
 import { useEffect, useReducer } from "react";
 
 export type WishlistAction =
@@ -76,7 +76,7 @@ export const WishlistProvider = ({
 	useEffect(() => {
 		const fetchWishlist = async () => {
 			if (!user) return;
-			const response = await wishlistApi.get("/", {
+			const response = await api.get("/wishlist", {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},

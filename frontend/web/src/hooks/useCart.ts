@@ -1,8 +1,8 @@
-import { cartApi } from "@/api/cart";
 import { CartType } from "@/context/CartContext";
 import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCartContext } from "@/hooks/useCartContext";
+import { api } from "@/services/api";
 import { useState } from "react";
 
 type CartAuthRequestType =
@@ -26,7 +26,7 @@ export const useCart = () => {
 			case "get":
 			case "delete": {
 				try {
-					const response = await cartApi[method]("/", {
+					const response = await api[method]("/cart", {
 						headers: {
 							Authorization: `Bearer ${user.token}`,
 						},
@@ -41,7 +41,7 @@ export const useCart = () => {
 			case "post":
 			case "patch": {
 				try {
-					const response = await cartApi[method]("/", body, {
+					const response = await api[method]("/cart", body, {
 						headers: {
 							Authorization: `Bearer ${user.token}`,
 						},

@@ -1,8 +1,8 @@
-import { wishlistApi } from "@/api/wishlistApi";
 import { ProductType } from "@/context/ProductContext";
 import { toDateISOString, WishlistType } from "@/context/WishlistContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useWishlistContext } from "@/hooks/useWishlistContext";
+import { api } from "@/services/api";
 import { useState } from "react";
 
 type WishlistAuthRequestType =
@@ -29,7 +29,7 @@ export const useWishlist = () => {
 			case "get":
 			case "delete": {
 				try {
-					const response = await wishlistApi[method]("/", {
+					const response = await api[method]("/wishlist", {
 						headers: {
 							Authorization: `Bearer ${user.token}`,
 						},
@@ -44,7 +44,7 @@ export const useWishlist = () => {
 			case "post":
 			case "patch": {
 				try {
-					const response = await wishlistApi[method]("/", body, {
+					const response = await api[method]("/wishlist", body, {
 						headers: {
 							Authorization: `Bearer ${user.token}`,
 						},

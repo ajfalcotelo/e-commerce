@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { productApi } from "@/api/product";
 import { ProductType, ProductContext } from "@/context/ProductContext";
+import { api } from "@/services/api";
 
 export const ProductProvider = ({
 	children,
@@ -45,7 +45,7 @@ export const ProductProvider = ({
 
 				// Refreshes localStorage after cachedDuration
 				console.log("ProductContext download data");
-				const response = await productApi.get("/");
+				const response = await api.get("/products");
 				localStorage.setItem("products", JSON.stringify(response.data));
 				localStorage.setItem("productsTimestamp", now.toString());
 				setProducts(response.data);

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import { authApi, AuthError } from "@/api/auth";
+import { api, ApiError } from "@/services/api";
 
 type SignIn = {
 	name: string;
@@ -18,7 +18,7 @@ export const useSignUp = ({ name, email, password }: SignIn) => {
 		setError(null);
 
 		try {
-			const response = await authApi.post("/signup", {
+			const response = await api.post("/user/signup", {
 				name,
 				email,
 				password,
@@ -30,7 +30,7 @@ export const useSignUp = ({ name, email, password }: SignIn) => {
 			dispatch({ type: "LOGIN", payload: { token, ...user } });
 		} catch (error) {
 			setIsLoading(false);
-			setError((error as AuthError)?.error);
+			setError((error as ApiError)?.error);
 		}
 	};
 
