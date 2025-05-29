@@ -38,6 +38,18 @@ const router = createBrowserRouter([
 						element: <Shop />,
 					},
 					{
+						path: ROUTES.HOME.FURNITURE,
+						element: <Shop />,
+					},
+					{
+						path: ROUTES.HOME.SPORTS,
+						element: <Shop />,
+					},
+					{
+						path: ROUTES.HOME.BEAUTY,
+						element: <Shop />,
+					},
+					{
 						path: ROUTES.HOME.JEWELRY,
 						element: <Shop />,
 					},

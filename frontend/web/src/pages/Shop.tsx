@@ -48,6 +48,7 @@ export const Shop = () => {
 					tag="Our Products"
 					viewAllBtn
 					viewAllCategory="Products"
+					options={{ watchDrag: false }}
 					dataSet={products}
 					rows={2}
 					renderData={(data) => (

@@ -30,6 +30,7 @@ export const Login = () => {
 						onChange={(e) => setEmail(e.target.value)}
 					/>
 					<AuthInput
+						type="password"
 						placeholder="Password"
 						onChange={(e) => setPassword(e.target.value)}
 					/>
