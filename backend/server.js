@@ -1,12 +1,11 @@
-import express from "express";
-import connectDB from "./config/db.js";
-import productRoutes from "./routes/productRoutes.js";
-import notFoundMiddleware from "./middlewares/notFoundMiddleware.js";
-import errorMiddleware from "./middlewares/errorMiddleware.js";
-import userRoutes from "./routes/userRoutes.js";
-import cors from "cors";
-import cartRoutes from "./routes/cartRoutes.js";
-import wishlistRoutes from "./routes/wishlistRoutes.js";
+import express from 'express';
+import connectDB from './config/db.js';
+import notFoundMiddleware from './middlewares/notFoundMiddleware.js';
+import errorMiddleware from './middlewares/errorMiddleware.js';
+import userRoutes from './routes/userRoutes.js';
+import cors from 'cors';
+import cartRoutes from './routes/cartRoutes.js';
+import wishlistRoutes from './routes/wishlistRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT;
@@ -21,10 +20,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 // Routes
-app.use("/api/cart", cartRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/wishlist", wishlistRoutes);
-app.use("/api/user", userRoutes);
+app.use('/api/cart', cartRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/user', userRoutes);
 
 // Error Handler Middleware
 // something wrong with notfound, better solution may require

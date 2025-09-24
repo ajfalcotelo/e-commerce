@@ -1,8 +1,8 @@
 import { CartType } from "@/context/CartContext";
-import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCartContext } from "@/hooks/useCartContext";
 import { api } from "@/services/api";
+import { Products } from "@/types";
 import { useState } from "react";
 
 type CartAuthRequestType =
@@ -12,11 +12,16 @@ type CartAuthRequestType =
 	  }
 	| {
 			method: "patch" | "post";
-			body: object;
+			body: {
+				products: {
+					product_id: number;
+					count: number;
+				}[];
+			};
 	  };
 
 export const useCart = () => {
-	const { products, dispatch } = useCartContext();
+	const { products: cartItems, dispatch: cartDispatch } = useCartContext();
 	const { user } = useAuthContext();
 	const [error, setError] = useState<string | null>(null);
 
@@ -60,43 +65,44 @@ export const useCart = () => {
 
 	const getCart = async () => {
 		const userCartData = await authorizedRequest({ method: "get" });
-		if (!userCartData) return;
-		dispatch({ type: "SET", payload: userCartData });
+
+		if (userCartData) {
+			cartDispatch({ type: "SET", payload: userCartData });
+		}
 	};
 
 	const createCart = async (
-		initialProduct: ProductType,
+		initialProduct: Products,
 		initialProductCount: number,
 	) => {
 		const userCartData = await authorizedRequest({ method: "get" });
 		if (userCartData) console.log("Cart Data Already Exists");
-		dispatch({
+		cartDispatch({
 			type: "SET",
 			payload: [{ product: initialProduct, count: initialProductCount }],
 		});
 		await authorizedRequest({
 			method: "post",
 			body: {
-				products: [{ product: initialProduct, count: initialProductCount }],
+				products: [
+					{ product_id: initialProduct.id, count: initialProductCount },
+				],
 			},
 		});
-		console.log("cart created");
 	};
 
-	const removeItem = async ({ product }: CartType) => {
+	const removeItem = async (productId: number) => {
 		const userCartData = await authorizedRequest({ method: "get" });
-
 		if (!userCartData) return;
 
-		const newProducts = [...products].filter(
-			(item) => item.product._id != product._id,
-		);
+		const newProducts = [...cartItems]
+			.filter((item) => item.product.id != productId)
+			.map((item) => ({ product_id: item.product.id, count: item.count }));
 
 		await authorizedRequest({
 			method: "patch",
 			body: { products: newProducts },
 		});
-		console.log("item removed");
 	};
 
 	const addItem = async ({ product, count }: CartType) => {
@@ -107,62 +113,86 @@ export const useCart = () => {
 		}
 
 		if (product.stock < count) {
-			console.log("Cannot add more, no more stock");
 			return;
 		}
 
-		// if product already exists, will only add count
-		// if product does not exist, will add to cart
-		if (products.some((item: CartType) => item.product._id === product._id)) {
-			console.log("product already exists, will only add count");
+		if (cartItems.some((item) => item.product.id === product.id)) {
+			// if product already exists, will only add count
 
-			const productIndex = products.findIndex(
-				(item) => item.product._id === product._id,
+			const productIndex = cartItems.findIndex(
+				(item) => item.product.id === product.id,
 			);
-			dispatch({
+			cartDispatch({
 				type: "UPDATE_ITEM",
-				payload: { product, count: products[productIndex].count + 1 },
+				payload: {
+					product: product,
+					count: cartItems[productIndex].count + 1,
+				},
 				index: productIndex,
 			});
-			await updateItem({ product, count: products[productIndex].count + 1 });
+			await updateItem({ product, count: cartItems[productIndex].count + 1 });
 		} else {
+			// if product does not exist, will add to cart
 			console.log("product does not exist, will add to cart");
-			dispatch({ type: "ADD", payload: { product, count } });
+			cartDispatch({ type: "ADD", payload: { product, count } });
 			await authorizedRequest({
 				method: "patch",
-				body: { products: [...products, { product, count }] },
+				body: {
+					products: [
+						...[...cartItems].map((item) => ({
+							product_id: item.product.id,
+							count: item.count,
+						})),
+						{ product_id: product.id, count },
+					],
+				},
 			});
 			console.log("item added");
 		}
-	};
-
-	const deleteCart = async () => {
-		const responseData = await authorizedRequest({ method: "delete" });
-		if (!responseData) return;
-		dispatch({ type: "DELETE" });
-		console.log("cart deleted");
 	};
 
 	const updateItem = async ({ product, count }: CartType) => {
 		const userCartData = await authorizedRequest({ method: "get" });
 		if (!userCartData) return;
 
-		const productIndex = products.findIndex(
-			(item) => item.product._id === product._id,
+		const productIndex = cartItems.findIndex(
+			(item) => item.product.id === product.id,
 		);
+
+		cartDispatch({
+			type: "UPDATE_ITEM",
+			payload: {
+				product,
+				count: cartItems[productIndex].count + 1,
+			},
+			index: productIndex,
+		});
 
 		await authorizedRequest({
 			method: "patch",
 			body: {
 				products: [
-					...products.slice(0, productIndex),
-					{ product, count },
-					...products.slice(productIndex + 1),
+					...cartItems.slice(0, productIndex).map((item) => ({
+						product_id: item.product.id,
+						count: item.count,
+					})),
+					{ product_id: product.id, count },
+					...cartItems.slice(productIndex + 1).map((item) => ({
+						product_id: item.product.id,
+						count: item.count,
+					})),
 				],
 			},
 		});
 
 		console.log("item updated");
+	};
+
+	const deleteCart = async () => {
+		const responseData = await authorizedRequest({ method: "delete" });
+		if (!responseData) return;
+		cartDispatch({ type: "DELETE" });
+		console.log("cart deleted");
 	};
 
 	return {

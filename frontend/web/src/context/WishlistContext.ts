@@ -1,5 +1,5 @@
-import { ProductType } from "@/context/ProductContext";
 import { WishlistAction } from "@/context/WishlistProvider";
+import { Products } from "@/types";
 import { createContext } from "react";
 
 export type DateISOString = string & { readonly __brand: "DateISOString" };
@@ -13,7 +13,7 @@ export const addedAtToDateISOString = (value: string): DateISOString => {
 };
 
 export type WishlistType = {
-	product: ProductType;
+	product: Products;
 	addedAt: DateISOString;
 };
 

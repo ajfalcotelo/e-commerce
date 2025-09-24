@@ -1,8 +1,8 @@
 import { StarRating } from "@/components/ui/StarRating";
-import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useCart } from "@/hooks/useCart";
 import { cn } from "@/lib/utils";
+import { Products } from "@/types";
 import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
 import { ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
@@ -10,7 +10,7 @@ import { toast } from "sonner";
 export const PRODUCT_CARD_WIDTH = 270;
 
 type ProductCardProps = {
-	product: ProductType;
+	product: Products;
 	showRatings?: boolean;
 	actionButtons?: React.ReactElement;
 	alwaysShowCartButton?: boolean;
@@ -24,17 +24,21 @@ export const ProductCard = ({
 	alwaysShowCartButton = false,
 	hoverHighlight = true,
 }: ProductCardProps) => {
-	const { title, image, rating, discountRate: discount } = product;
+	const {
+		title,
+		thumbnail,
+		rating,
+		discountPercentage: discount,
+		price,
+	} = product;
 	const { user } = useAuthContext();
 	const { addItem } = useCart();
-	let { price } = product;
 
-	const oldPrice = discount ? price : null;
-
-	if (discount) {
-		const discountedPrice = price - price * (discount / 100);
-		price = roundNumberByDecimalPlace(discountedPrice, 2);
-	}
+	const oldPrice = !!discount ? price : null;
+	const newPrice = !!discount
+		? roundNumberByDecimalPlace(price - price * (discount / 100), 2)
+		: price;
+	const ratingCount = Math.floor(Math.random() * 300);
 
 	const handleAddToCartClick = () => {
 		if (user) {
@@ -61,7 +65,7 @@ export const ProductCard = ({
 					rounded-b-none"
 			>
 				<img
-					src={image[0]}
+					src={thumbnail}
 					alt="An image showcasing the product"
 					className="max-h-40 max-w-40 rounded-lg select-none"
 				/>
@@ -95,16 +99,16 @@ export const ProductCard = ({
 			<div className="bg-secondary-white-smoke w-full space-y-2 p-2">
 				<p className="h-6 truncate font-medium">{title}</p>
 				<div className="space-x-3 font-medium">
-					<span className="text-secondary-cute-crab">${price}</span>
-					{discount && (
+					<span className="text-secondary-cute-crab">${newPrice}</span>
+					{!!discount && (
 						<span className="text-battle-grey line-through">${oldPrice}</span>
 					)}
 				</div>
 				{showRatings && (
 					<div className="flex flex-row items-center gap-2 select-none">
-						<StarRating rate={rating.rate} className="size-5" />
+						<StarRating rate={rating} className="size-5" />
 						<span className="text-battle-grey text-sm font-semibold">
-							({rating.count})
+							({ratingCount})
 						</span>
 					</div>
 				)}

@@ -28,7 +28,7 @@ export const Wishlist = () => {
 
 	const handleMoveAllToCart = () => {
 		wishlist.forEach((wishlist) => {
-			if (!products.some((cart) => cart.product._id === wishlist.product._id)) {
+			if (!products.some((cart) => cart.product.id === wishlist.product.id)) {
 				const { product } = wishlist;
 				addItem({ product, count: 1 });
 			} else {
@@ -100,7 +100,7 @@ export const Wishlist = () => {
 						{wishlist.map((item) => {
 							return (
 								<ProductCard
-									key={item.product._id}
+									key={item.product.id}
 									product={item.product}
 									actionButtons={
 										<RemoveWishlistCardAction product={item.product} />

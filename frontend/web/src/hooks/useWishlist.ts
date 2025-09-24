@@ -1,8 +1,8 @@
-import { ProductType } from "@/context/ProductContext";
-import { toDateISOString, WishlistType } from "@/context/WishlistContext";
+import { DateISOString, toDateISOString } from "@/context/WishlistContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useWishlistContext } from "@/hooks/useWishlistContext";
 import { api } from "@/services/api";
+import { Products } from "@/types";
 import { useState } from "react";
 
 type WishlistAuthRequestType =
@@ -12,11 +12,16 @@ type WishlistAuthRequestType =
 	  }
 	| {
 			method: "patch" | "post";
-			body: object;
+			body: {
+				wishlist: {
+					product_id: number;
+					addedAt: DateISOString;
+				}[];
+			};
 	  };
 
 export const useWishlist = () => {
-	const { wishlist, dispatch } = useWishlistContext();
+	const { wishlist, dispatch: wishlistDispatch } = useWishlistContext();
 	const { user } = useAuthContext();
 	const [error, setError] = useState<string | null>(null);
 
@@ -61,10 +66,10 @@ export const useWishlist = () => {
 		}
 	};
 
-	const createWishlist = async (initialProduct: ProductType) => {
+	const createWishlist = async (initialProduct: Products) => {
 		const userWishlistData = await authorizedRequest({ method: "get" });
 		if (userWishlistData) console.log("Wishlist Data Already Exists");
-		dispatch({
+		wishlistDispatch({
 			type: "SET",
 			payload: [
 				{
@@ -78,7 +83,7 @@ export const useWishlist = () => {
 			body: {
 				wishlist: [
 					{
-						product: initialProduct,
+						product_id: initialProduct.id,
 						addedAt: toDateISOString(new Date(Date.now())),
 					},
 				],
@@ -88,17 +93,15 @@ export const useWishlist = () => {
 		console.log("wishlist created");
 	};
 
-	const addItem = async (product: ProductType) => {
+	const addItem = async (product: Products) => {
 		const userWishlistData = await authorizedRequest({ method: "get" });
 		if (!userWishlistData) {
 			console.log("user does not have wishlist, will now create");
 			createWishlist(product);
 		}
 
-		if (
-			!wishlist.some((item: WishlistType) => item.product._id === product._id)
-		) {
-			dispatch({
+		if (!wishlist.some((item) => item.product.id === product.id)) {
+			wishlistDispatch({
 				type: "ADD",
 				payload: { product, addedAt: toDateISOString(new Date(Date.now())) },
 			});
@@ -106,35 +109,39 @@ export const useWishlist = () => {
 				method: "patch",
 				body: {
 					wishlist: [
-						...wishlist,
-						{ product, addedAt: toDateISOString(new Date(Date.now())) },
+						...[...wishlist].map((item) => ({
+							product_id: item.product.id,
+							addedAt: item.addedAt,
+						})),
+						{
+							product_id: product.id,
+							addedAt: toDateISOString(new Date(Date.now())),
+						},
 					],
 				},
 			});
-			console.log("item added");
 		}
 	};
 
-	const removeItem = async (product: ProductType) => {
+	const removeItem = async (product: Products) => {
 		const userCartData = await authorizedRequest({ method: "get" });
 		if (!userCartData) return;
 
-		dispatch({ type: "REMOVE_ITEM", payload: { ...product } });
+		wishlistDispatch({ type: "REMOVE_ITEM", payload: { ...product } });
 		await authorizedRequest({
 			method: "patch",
 			body: {
-				wishlist: [...wishlist].filter(
-					(item) => item.product._id != product._id,
-				),
+				wishlist: [...wishlist]
+					.filter((item) => item.product.id != product.id)
+					.map((item) => ({ product_id: product.id, addedAt: item.addedAt })),
 			},
 		});
-		console.log("item removed");
 	};
 
 	const deleteWishlist = async () => {
 		const responseData = await authorizedRequest({ method: "delete" });
 		if (!responseData) return;
-		dispatch({ type: "DELETE" });
+		wishlistDispatch({ type: "DELETE" });
 		console.log("wishlist deleted");
 	};
 

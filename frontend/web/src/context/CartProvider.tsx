@@ -2,6 +2,8 @@ import { api } from "@/services/api";
 import { CartContext, CartState, CartType } from "@/context/CartContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useEffect, useReducer } from "react";
+import { fetchProductBaseUrl } from "@/utils/api";
+import { Products } from "@/types";
 
 export type CartAction =
 	| {
@@ -43,7 +45,7 @@ const CartReducer = (state: CartState, action: CartAction): CartState => {
 			return {
 				products: [
 					...state.products.filter(
-						(item) => item.product._id != action.payload.product._id,
+						(item) => item.product != action.payload.product,
 					),
 				],
 			};
@@ -58,20 +60,40 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(CartReducer, { products: [] });
 	const { user } = useAuthContext();
 
-	console.log("CartContext cart: ", state);
-
 	useEffect(() => {
 		const fetchCart = async () => {
 			if (!user) return;
-			const response = await api.get("/cart", {
+			const dbResponse = await api.get("/cart", {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
 			});
 
-			if (response.data) {
-				dispatch({ type: "SET", payload: response.data.products });
-			}
+			const dbProducts: { product_id: number; count: number }[] =
+				dbResponse.data.products;
+			const apiResponse = await Promise.allSettled(
+				dbProducts.map(async (item) => {
+					const data = await fetchProductBaseUrl<Products>(
+						`/${item.product_id}`,
+					);
+					return { product: data, count: item.count };
+				}),
+			);
+
+			apiResponse.forEach((item, index) => {
+				if (item.status === "fulfilled") {
+					dispatch({
+						type: "ADD",
+						payload: { product: item.value.product, count: item.value.count },
+					});
+				} else {
+					console.error(
+						`Cart API Fetch ${index} Error ${item.status}: ${item.reason}`,
+					);
+				}
+			});
+
+			console.log("test");
 		};
 
 		fetchCart();

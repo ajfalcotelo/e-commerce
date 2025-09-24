@@ -1,14 +1,14 @@
 import { CardActionButton } from "@/components/ui/CardActionButton";
-import { ProductType } from "@/context/ProductContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useWishlistContext } from "@/hooks/useWishlistContext";
+import { Products } from "@/types";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { toast } from "sonner";
 
 export const RemoveWishlistCardAction = ({
 	product,
 }: {
-	product: ProductType;
+	product: Products;
 }) => {
 	const { removeItem } = useWishlist();
 	const { dispatch } = useWishlistContext();

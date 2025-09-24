@@ -2,12 +2,13 @@ import { ImageCarousel } from "@/components/ImageCarousel";
 import { Categories } from "@/components/Categories";
 import { CardCarouselSection } from "@/components/CardCarouselSection";
 import { ProductCard } from "@/components/ProductCard";
-import { useProductContext } from "@/hooks/useProductContext";
 import { WishlistCardAction } from "@/components/WishlistCardAction";
-import { ProductType } from "@/context/ProductContext";
 import { QuickViewCardAction } from "@/components/QuickViewCardAction";
+import { Products } from "@/types";
+import { fetchProductBaseUrl } from "@/utils/api";
+import { useEffect, useState } from "react";
 
-const CarouselCardAction = (product: ProductType) => (
+const CarouselCardAction = (product: Products) => (
 	<>
 		<WishlistCardAction product={product} />
 		<QuickViewCardAction product={product} />
@@ -15,8 +16,21 @@ const CarouselCardAction = (product: ProductType) => (
 );
 
 export const Shop = () => {
-	const { products } = useProductContext();
-	const discountedProducts = products.filter((product) => product.discountRate);
+	const [products, setProducts] = useState<Products[]>([]);
+
+	useEffect(() => {
+		const getProducts = async () => {
+			const data = await fetchProductBaseUrl<{ products: Products[] }>();
+			const products = data.products;
+			setProducts(products);
+		};
+
+		getProducts();
+	}, []);
+
+	const discountedProducts = products.filter(
+		(product) => product.discountPercentage,
+	);
 
 	return (
 		<div className="mx-[16vw]">
@@ -38,7 +52,7 @@ export const Shop = () => {
 					renderData={(data) => (
 						<ProductCard
 							product={data}
-							key={data._id}
+							key={data.id}
 							actionButtons={CarouselCardAction(data)}
 						/>
 					)}
@@ -54,7 +68,7 @@ export const Shop = () => {
 					renderData={(data) => (
 						<ProductCard
 							product={data}
-							key={data._id}
+							key={data.id}
 							actionButtons={CarouselCardAction(data)}
 						/>
 					)}

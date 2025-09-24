@@ -1,18 +1,16 @@
-import mongoose from "mongoose";
-import Cart from "../models/Cart.js";
+import mongoose from 'mongoose';
+import Cart from '../models/Cart.js';
 
 // @desc GET cart by user
 // @route GET /api/cart
 export const getCart = async (req, res, next) => {
   try {
-    const cart = await Cart.findOne({ user_id: req.user })
-      .populate("products.product")
-      .exec();
+    const cart = await Cart.findOne({ user_id: req.user });
 
     res.status(200).json(cart);
   } catch (error) {
     console.error(error);
-    const err = new Error("Failed to find cart");
+    const err = new Error('Failed to find cart');
     return next(err);
   }
 };
@@ -23,7 +21,7 @@ export const postCart = async (req, res, next) => {
   const { products } = req.body;
 
   if (products.length <= 0) {
-    const error = new Error("Cart must contain atleast one product");
+    const error = new Error('Cart must contain atleast one product');
     error.status = 400;
     return next(error);
   }
@@ -56,7 +54,7 @@ export const patchCart = async (req, res, next) => {
       return next(err);
     }
     console.log(error);
-    const err = new Error("Failed to update cart");
+    const err = new Error('Failed to update cart');
     return next(err);
   }
 };
@@ -69,7 +67,7 @@ export const deleteCart = async (req, res, next) => {
     res.status(200).json(deletedCart);
   } catch (error) {
     console.error(error);
-    const err = new Error("Failed to delete cart");
+    const err = new Error('Failed to delete cart');
     return next(err);
   }
 };

@@ -1,19 +1,18 @@
-import Wishlist from "../models/Wishlist.js";
-import mongoose from "mongoose";
+import Wishlist from '../models/Wishlist.js';
+import mongoose from 'mongoose';
 
 // @desc GET user wishlist
 // @route /api/wishlist
 export const getWishlist = async (req, res, next) => {
   try {
-    const wishlist = await Wishlist.findOne({ user_id: req.user })
-      .populate("wishlist.product")
-      .select("wishlist")
-      .exec();
+    const wishlist = await Wishlist.findOne({ user_id: req.user }).select(
+      'wishlist'
+    );
 
     res.status(200).json(wishlist);
   } catch (error) {
     console.error(error);
-    const err = new Error("Failed to GET wishlist");
+    const err = new Error('Failed to GET wishlist');
     next(err);
   }
 };
@@ -24,7 +23,7 @@ export const postWishlist = async (req, res, next) => {
   const { wishlist } = req.body;
 
   if (wishlist.length <= 0) {
-    const error = new Error("Wishlist must contain atleast one product");
+    const error = new Error('Wishlist must contain atleast one product');
     error.status = 400;
     return next(error);
   }
@@ -64,7 +63,7 @@ export const patchWishlist = async (req, res, next) => {
       const err = new Error(error.message);
       return next(err);
     }
-    const err = new Error("Failed to update wishlist");
+    const err = new Error('Failed to update wishlist');
     return next(err);
   }
 };
@@ -79,7 +78,7 @@ export const deleteWishlist = async (req, res, next) => {
     res.status(200).json(deletedWishlist);
   } catch (error) {
     console.error(error);
-    const err = new Error("Failed to delete wishlist");
+    const err = new Error('Failed to delete wishlist');
     return next(err);
   }
 };

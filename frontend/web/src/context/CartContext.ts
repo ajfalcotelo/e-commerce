@@ -1,11 +1,12 @@
 import { CartAction } from "@/context/CartProvider";
-import { ProductType } from "@/context/ProductContext";
+import { Products } from "@/types";
 import { createContext } from "react";
 
 export type CartType = {
-	product: ProductType;
+	product: Products;
 	count: number;
 };
+
 export type CartState = {
 	products: CartType[];
 };

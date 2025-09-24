@@ -1,12 +1,14 @@
-import { ProductType } from "@/context/ProductContext";
 import {
 	addedAtToDateISOString,
+	DateISOString,
 	WishlistContext,
 	WishlistState,
 	WishlistType,
 } from "@/context/WishlistContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { api } from "@/services/api";
+import { Products } from "@/types";
+import { fetchProductBaseUrl } from "@/utils/api";
 import { useEffect, useReducer } from "react";
 
 export type WishlistAction =
@@ -25,7 +27,7 @@ export type WishlistAction =
 	  }
 	| {
 			type: "REMOVE_ITEM";
-			payload: ProductType;
+			payload: Products;
 	  }
 	| {
 			type: "DELETE";
@@ -52,7 +54,7 @@ const WishlistReducer = (
 			return {
 				wishlist: [
 					...state.wishlist.filter(
-						(item) => item.product._id != action.payload._id,
+						(item) => item.product.id != action.payload.id,
 					),
 				],
 			};
@@ -76,21 +78,41 @@ export const WishlistProvider = ({
 	useEffect(() => {
 		const fetchWishlist = async () => {
 			if (!user) return;
-			const response = await api.get("/wishlist", {
+			const dbResponse = await api.get("/wishlist", {
 				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
 			});
 
-			if (response.data) {
-				const { wishlist } = response.data;
-				const newWishlist = [...wishlist].map((item) => {
-					const { product, addedAt } = item;
-					const newAddedAt = addedAtToDateISOString(addedAt);
-					return { product, addedAt: newAddedAt };
-				});
-				dispatch({ type: "SET", payload: newWishlist });
-			}
+			const dbProducts: { product_id: number; addedAt: DateISOString }[] =
+				dbResponse.data.wishlist;
+
+			console.log(dbResponse);
+
+			const apiResponse = await Promise.allSettled(
+				dbProducts.map(async (item) => {
+					const data = await fetchProductBaseUrl<Products>(
+						`/${item.product_id}`,
+					);
+					return { product: data, addedAt: item.addedAt };
+				}),
+			);
+
+			apiResponse.forEach((item, index) => {
+				if (item.status === "fulfilled") {
+					dispatch({
+						type: "ADD",
+						payload: {
+							product: item.value.product,
+							addedAt: addedAtToDateISOString(item.value.addedAt),
+						},
+					});
+				} else {
+					console.error(
+						`Cart API Fetch ${index} Error ${item.status}: ${item.reason}`,
+					);
+				}
+			});
 		};
 
 		fetchWishlist();

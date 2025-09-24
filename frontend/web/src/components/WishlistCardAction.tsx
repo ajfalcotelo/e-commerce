@@ -1,13 +1,13 @@
 import { CardActionButton } from "@/components/ui/CardActionButton";
-import { ProductType } from "@/context/ProductContext";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useWishlist } from "@/hooks/useWishlist";
 import { useWishlistContext } from "@/hooks/useWishlistContext";
+import { Products } from "@/types";
 import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaRegTrashCan } from "react-icons/fa6";
 import { toast } from "sonner";
 
-export const WishlistCardAction = ({ product }: { product: ProductType }) => {
+export const WishlistCardAction = ({ product }: { product: Products }) => {
 	const { wishlist } = useWishlistContext();
 	const { addItem, removeItem } = useWishlist();
 	const { user } = useAuthContext();
@@ -45,7 +45,7 @@ export const WishlistCardAction = ({ product }: { product: ProductType }) => {
 
 	useEffect(() => {
 		if (!user) return;
-		if (wishlist.some((item) => item.product._id === product._id)) {
+		if (wishlist.some((item) => item.product.id === product.id)) {
 			setToggleWishlist(true);
 		}
 	}, [product, wishlist, user]);

@@ -7,7 +7,6 @@ import {
 	TableRow,
 } from "@/components/ui/shadcn/table";
 import { useCart } from "@/hooks/useCart";
-import { ProductType } from "@/context/ProductContext";
 import { Input } from "@/components/ui/shadcn/input";
 import { useCartContext } from "@/hooks/useCartContext";
 import { roundNumberByDecimalPlace } from "@/utils/roundNumber";
@@ -28,15 +27,16 @@ import {
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import { Button } from "@/components/ui/shadcn/button";
 import { FaRegTrashCan } from "react-icons/fa6";
+import { Products } from "@/types";
 
 export const CartTable = ({ className, ...props }: { className?: string }) => {
-	const { products, dispatch } = useCartContext();
+	const { products, dispatch: cartDispatch } = useCartContext();
 	const { updateItem, removeItem, deleteCart } = useCart();
 	const [count, setCount] = useState(1);
-	const [product, setProduct] = useState<ProductType>();
+	const [product, setProduct] = useState<Products>();
 	const debouncedCount = useDebounce(count, 800);
 
-	const handleInputChange = (product: ProductType, value: string) => {
+	const handleInputChange = (product: Products, value: string) => {
 		const regex = /[^0-9]+/g;
 		const newValue = value.replace(regex, "");
 		const newCount = Number(newValue);
@@ -48,7 +48,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 		setProduct(product);
 	};
 
-	const handleInputBlur = (product: ProductType, value: string) => {
+	const handleInputBlur = (product: Products, value: string) => {
 		const regex = /[\D]+/g;
 		const newCount = Math.max(1, Number(value.replace(regex, "")));
 		if (product.stock < newCount) {
@@ -80,12 +80,12 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 	};
 
 	const handleClickRemove = ({ product, count }: CartType) => {
-		dispatch({ type: "REMOVE_ITEM", payload: { product, count } });
-		removeItem({ product, count });
+		cartDispatch({ type: "REMOVE_ITEM", payload: { product, count } });
+		removeItem(product.id);
 	};
 
 	const handleClickRemoveAll = () => {
-		dispatch({ type: "DELETE" });
+		cartDispatch({ type: "DELETE" });
 		deleteCart();
 	};
 
@@ -93,23 +93,19 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 	useEffect(() => {
 		if (!product) return;
 		updateItem({ product, count: debouncedCount });
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [debouncedCount]);
 
 	// UPDATES UI IMMEDIATELY
 	useEffect(() => {
 		if (!product) return;
 		const productIndex = products.findIndex(
-			(item) => item.product._id === product._id,
+			(item) => item.product.id === product.id,
 		);
-		dispatch({
+		cartDispatch({
 			type: "UPDATE_ITEM",
 			payload: { product, count },
 			index: productIndex,
 		});
-
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [count]);
 
 	return (
@@ -166,7 +162,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 				{products &&
 					products.map((item) => {
 						return (
-							<TableRow key={item.product._id}>
+							<TableRow key={item.product.id}>
 								<TableCell>
 									<Button
 										variant="outline"
@@ -182,7 +178,7 @@ export const CartTable = ({ className, ...props }: { className?: string }) => {
 								<TableCell className="flex flex-row items-center gap-5">
 									<div className="bg-primary-white flex size-14 items-center justify-center rounded-md">
 										<img
-											src={item.product.image[0]}
+											src={item.product.images[0]}
 											className="max-h-12 max-w-12"
 										/>
 									</div>

@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/shadcn/button";
 import { Input } from "@/components/ui/shadcn/input";
 import { Skeleton } from "@/components/ui/shadcn/skeleton";
 import { StarRating } from "@/components/ui/StarRating";
-import { ProductType } from "@/context/ProductContext";
-import { useProductContext } from "@/hooks/useProductContext";
 import { NotFound } from "@/pages/NotFound";
+import { Products } from "@/types";
+import { fetchProductBaseUrl } from "@/utils/api";
 import { ROUTES } from "@/utils/constant";
 import { Minus, Plus, RefreshCcw, ShoppingCart, Truck } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -15,11 +15,11 @@ import { useParams } from "react-router";
 
 export const Quickview = () => {
 	const { slugId } = useParams();
-	const { products, loaded } = useProductContext();
-	const [product, setProduct] = useState<ProductType | undefined>(undefined);
+	const [product, setProduct] = useState<Products | undefined>(undefined);
 	const [notFound, setNotFound] = useState(false);
 	const [count, setCount] = useState(1);
 	const [isRendering, setIsRendering] = useState(true);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const handleInputChange = (value: string) => {
 		const regex = /[^0-9]+/g;
@@ -64,7 +64,6 @@ export const Quickview = () => {
 	};
 
 	useEffect(() => {
-		if (!loaded) return;
 		const match = slugId?.match(/(.+)-i([a-fA-F0-9]{24})$/);
 		if (!match) {
 			console.log("no match");
@@ -72,21 +71,27 @@ export const Quickview = () => {
 			return;
 		}
 		const id = match[2];
-		const product = products.find((el) => el._id === id);
-		console.log(id, product);
-		if (!product) {
-			console.log("no product");
-			setNotFound(true);
-			return;
-		}
-		setProduct(product);
-	}, [slugId, products, loaded]);
+
+		const getProduct = async () => {
+			setIsLoading(true);
+			const data = await fetchProductBaseUrl<Products>(`/${id}`);
+			if (!data) {
+				console.log("no product");
+				setNotFound(true);
+				return;
+			}
+			setIsLoading(false);
+			setProduct(data);
+		};
+
+		getProduct();
+	}, [slugId]);
 
 	useEffect(() => {
 		requestAnimationFrame(() => setIsRendering(false));
 	});
 
-	if (!loaded) {
+	if (!isLoading) {
 		return (
 			<div className="flex min-h-[600px] min-w-[700px] flex-row gap-8">
 				<div className="flex flex-col gap-4">
@@ -134,9 +139,9 @@ export const Quickview = () => {
 								<h2 className="text-2xl font-semibold">{product.title}</h2>
 								<div className="divide-battle-grey flex flex-row items-center divide-x-2">
 									<div className="flex flex-row items-center gap-2 pr-4">
-										<StarRating rate={product.rating.rate} className="size-4" />
+										<StarRating rate={product.rating} className="size-4" />
 										<p className="text-battle-grey text-sm">
-											({product.rating.count})
+											({Math.floor(Math.random() * 300)})
 										</p>
 									</div>
 									<p className="pl-4 text-sm">

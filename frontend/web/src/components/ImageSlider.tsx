@@ -1,18 +1,16 @@
 import { ScrollArea } from "@/components/ui/shadcn/scroll-area";
-import { ProductType } from "@/context/ProductContext";
 import { cn } from "@/lib/utils";
+import { Products } from "@/types";
 import { useState } from "react";
 
 type ImageSliderType = {
-	product: ProductType;
+	product: Products;
 	className?: string;
 };
 
 export const ImageSlider = ({ product, className }: ImageSliderType) => {
-	const [activeImgSrc, setActiveImgSrc] = useState(product.image[0]);
+	const [activeImgSrc, setActiveImgSrc] = useState(product.images[0]);
 	const [tempImgSrc, setTempImgSrc] = useState<string | undefined>();
-
-	console.log(product.image.length);
 
 	return (
 		<div
@@ -23,7 +21,7 @@ export const ImageSlider = ({ product, className }: ImageSliderType) => {
 		>
 			<ScrollArea>
 				<div className="flex flex-col gap-4 overflow-auto">
-					{product.image.map((el, id) => {
+					{product.images.map((el, id) => {
 						return (
 							<div
 								className={cn(
